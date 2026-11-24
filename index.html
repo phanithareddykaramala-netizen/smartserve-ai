@@ -5,52 +5,360 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SmartServe AI</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f6f7f1;color:#26382e;font-family:Arial,sans-serif}
-header{background:#174c3b;color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+body{
+ margin:0;
+ background:#f6f7f1;
+ color:#26382e;
+ font-family:Arial,sans-serif;
+}
+
+header{
+ background:#174c3b;
+ color:white;
+ padding:18px 5%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+}
+
 header h1{margin:0;font-size:23px}
 header p{margin:6px 0 0;color:#d5e6da;font-size:13px}
-nav{display:flex;gap:7px;overflow-x:auto;padding:12px 5%;background:white}
-nav button{border:0;background:#f0f3ef;padding:11px 14px;border-radius:9px;white-space:nowrap;color:#345343}
-nav button.active{background:#174c3b;color:white}
-main{max-width:1100px;margin:auto;padding:22px 5% 70px}
+
+.header-btn{
+ background:#ffffff22;
+ color:white;
+ border:1px solid #ffffff55;
+ padding:9px 12px;
+ border-radius:8px;
+}
+
+nav{
+ display:flex;
+ gap:7px;
+ overflow-x:auto;
+ padding:12px 5%;
+ background:white;
+}
+
+nav button{
+ border:0;
+ background:#f0f3ef;
+ padding:11px 14px;
+ border-radius:9px;
+ white-space:nowrap;
+ color:#345343;
+}
+
+nav button.active{
+ background:#174c3b;
+ color:white;
+}
+
+main{
+ max-width:1100px;
+ margin:auto;
+ padding:22px 5% 70px;
+}
+
 h2{color:#174c3b;margin:0 0 7px}
 .sub{color:#77847b;font-size:13px;margin:0 0 18px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0}
-.card,.panel{background:white;border:1px solid #e7ece6;border-radius:15px;padding:16px;margin-bottom:14px}
+
+.cards{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ margin:15px 0;
+}
+
+.card,.panel{
+ background:white;
+ border:1px solid #e7ece6;
+ border-radius:15px;
+ padding:16px;
+ margin-bottom:14px;
+}
+
 .card small{color:#78847c}
 .value{font-size:22px;font-weight:bold;margin-top:9px}
-.green{color:#24734c}.red{color:#c3544b}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.panel h3{margin:0 0 14px;font-size:16px}
-.rowitem{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #edf0eb;font-size:13px}
+.green{color:#24734c}
+.red{color:#c3544b}
+
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+
+.panel h3{
+ margin:0 0 14px;
+ font-size:16px;
+}
+
+.rowitem{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:12px 0;
+ border-bottom:1px solid #edf0eb;
+ font-size:13px;
+}
+
 .rowitem:last-child{border:0}
-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+form{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
 label{font-size:12px;color:#66746a}
-input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #dce4dc;border-radius:9px;background:white;font-size:14px}
-.primary{background:#174c3b;color:white;border:0;padding:13px;border-radius:9px;font-weight:bold}
-.secondary{background:#e2ede3;color:#174c3b;border:0;padding:10px;border-radius:8px}
-.danger{background:#fff0ed;color:#a54439;border:0;padding:8px;border-radius:8px}
+
+input,select{
+ width:100%;
+ padding:12px;
+ margin-top:6px;
+ border:1px solid #dce4dc;
+ border-radius:9px;
+ background:white;
+ font-size:14px;
+}
+
+.primary{
+ background:#174c3b;
+ color:white;
+ border:0;
+ padding:13px;
+ border-radius:9px;
+ font-weight:bold;
+}
+
+.secondary{
+ background:#e2ede3;
+ color:#174c3b;
+ border:0;
+ padding:10px;
+ border-radius:8px;
+}
+
+.danger{
+ background:#fff0ed;
+ color:#a54439;
+ border:0;
+ padding:8px;
+ border-radius:8px;
+}
+
 .full{grid-column:1/-1}
+
 .tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:420px;font-size:13px}
-td,th{text-align:left;padding:11px 7px;border-bottom:1px solid #edf0eb}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:420px;
+ font-size:13px;
+}
+
+td,th{
+ text-align:left;
+ padding:11px 7px;
+ border-bottom:1px solid #edf0eb;
+}
+
 th{color:#78847c}
+
 .hidden{display:none!important}
-.insight{background:#eef5ee;padding:14px;border-radius:10px;margin:10px 0;font-size:13px;line-height:1.5}
-.barline{display:flex;align-items:center;gap:10px;margin:16px 0;font-size:12px}
-.track{height:10px;background:#edf1ec;border-radius:20px;flex:1;overflow:hidden}
+
+.insight{
+ background:#eef5ee;
+ padding:14px;
+ border-radius:10px;
+ margin:10px 0;
+ font-size:13px;
+ line-height:1.5;
+}
+
+.barline{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ margin:16px 0;
+ font-size:12px;
+}
+
+.track{
+ height:10px;
+ background:#edf1ec;
+ border-radius:20px;
+ flex:1;
+ overflow:hidden;
+}
+
 .fill{height:100%;background:#24734c}
 .redfill{background:#c3544b}
-.choice{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
-.choice button{background:white;border:2px solid #dce7dc;border-radius:15px;padding:25px 12px;color:#174c3b;font-size:18px;font-weight:bold}
+
+.choice{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ margin-top:20px;
+}
+
+.choice button{
+ background:white;
+ border:2px solid #dce7dc;
+ border-radius:15px;
+ padding:22px 10px;
+ color:#174c3b;
+ font-size:16px;
+ font-weight:bold;
+}
+
 .choice button:active{border-color:#174c3b}
-footer{text-align:center;padding:25px;color:#78847c;font-size:12px}
-@media(max-width:650px){.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}main{padding-top:18px}}
-@media(max-width:380px){.value{font-size:18px}.card{padding:12px}}
+
+footer{
+ text-align:center;
+ padding:25px;
+ color:#78847c;
+ font-size:12px;
+}
+
+/* Easy category buttons */
+
+.category-buttons{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
+ margin-top:7px;
+}
+
+.category-btn{
+ background:white;
+ border:1px solid #dce4dc;
+ border-radius:10px;
+ padding:13px 8px;
+ color:#345343;
+ font-size:13px;
+ font-weight:bold;
+}
+
+.category-btn.selected{
+ background:#174c3b;
+ color:white;
+ border-color:#174c3b;
+}
+
+/* Expense pie chart */
+
+.pie-layout{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:25px;
+ padding:10px 0;
+}
+
+.pie-chart{
+ width:190px;
+ height:190px;
+ border-radius:50%;
+ background:#edf1ec;
+ flex-shrink:0;
+}
+
+.pie-legend{
+ flex:1;
+ min-width:160px;
+}
+
+.legend-item{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ padding:8px 0;
+ font-size:13px;
+ border-bottom:1px solid #edf0eb;
+}
+
+.legend-dot{
+ width:11px;
+ height:11px;
+ border-radius:50%;
+ flex-shrink:0;
+}
+
+.legend-name{flex:1}
+
+/* Daily performance graph */
+
+.performance-row{
+ margin:18px 0;
+}
+
+.performance-title{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ font-size:13px;
+ font-weight:bold;
+ margin-bottom:9px;
+}
+
+.graph-line{
+ display:grid;
+ grid-template-columns:75px 1fr;
+ align-items:center;
+ gap:8px;
+ margin:7px 0;
+ font-size:11px;
+}
+
+.graph-track{
+ background:#edf1ec;
+ height:13px;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+.graph-bar{
+ height:100%;
+ border-radius:20px;
+ min-width:0;
+}
+
+.yesterday-bar{background:#aab7ad}
+.today-bar{background:#24734c}
+.today-expense-bar{background:#c3544b}
+
+.performance-message{
+ background:#eef5ee;
+ padding:12px;
+ border-radius:9px;
+ font-size:13px;
+ line-height:1.6;
+ margin:10px 0;
+}
+
+@media(max-width:650px){
+ .cards{grid-template-columns:1fr 1fr}
+ .grid{grid-template-columns:1fr}
+ main{padding-top:18px}
+}
+
+@media(max-width:380px){
+ .value{font-size:18px}
+ .card{padding:12px}
+ .choice button{font-size:14px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -58,63 +366,119 @@ footer{text-align:center;padding:25px;color:#78847c;font-size:12px}
   <h1>🌿 SmartServe AI</h1>
   <p id="tagline">Simple business money manager</p>
  </div>
- <span style="font-size:11px;background:#ffffff22;padding:9px;border-radius:20px">DEMO</span>
+ <button class="header-btn" onclick="showBusinessChooser()">Change Business</button>
 </header>
+
+<!-- BUSINESS SELECTION -->
 
 <section id="businessChooser" style="max-width:700px;margin:35px auto;padding:20px">
  <h2>Welcome to SmartServe AI 👋</h2>
- <p class="sub">First, choose your business.</p>
+ <p class="sub">Choose your business to get started.</p>
+
  <div class="choice">
   <button onclick="chooseBusiness('restaurant')">🍽️<br><br>Restaurant</button>
   <button onclick="chooseBusiness('tea')">☕<br><br>Tea Shop</button>
+  <button onclick="chooseBusiness('salon')">💇<br><br>Salon</button>
  </div>
 </section>
 
+<!-- MAIN APPLICATION -->
+
 <div id="app" class="hidden">
+
 <nav id="nav">
  <button class="active" data-page="dashboard">Home</button>
  <button data-page="transactions">Money Entry</button>
  <button data-page="staff">Staff</button>
- <button data-page="ingredients">Ingredients</button>
+ <button data-page="ingredients">Ingredients / Products</button>
  <button data-page="insights">Suggestions</button>
  <button data-page="reports">Reports</button>
 </nav>
 
 <main>
+
+<!-- DASHBOARD -->
+
 <section id="dashboard" class="page">
  <h2 id="dashTitle">Your Business 👋</h2>
  <p class="sub">See how your business is doing today.</p>
 
  <h3>Today's Business</h3>
+
  <div class="cards">
-  <div class="card"><small>Today's Income</small><div class="value green" id="todayIncome">₹0</div></div>
-  <div class="card"><small>Today's Expenses</small><div class="value red" id="todayExpense">₹0</div></div>
-  <div class="card"><small>Today's Profit</small><div class="value" id="todayProfit">₹0</div></div>
+  <div class="card">
+   <small>Today's Income</small>
+   <div class="value green" id="todayIncome">₹0</div>
+  </div>
+
+  <div class="card">
+   <small>Today's Expenses</small>
+   <div class="value red" id="todayExpense">₹0</div>
+  </div>
+
+  <div class="card">
+   <small>Today's Profit</small>
+   <div class="value" id="todayProfit">₹0</div>
+  </div>
  </div>
 
  <h3>This Month</h3>
+
  <div class="cards">
-  <div class="card"><small>Monthly Income</small><div class="value green" id="income">₹0</div></div>
-  <div class="card"><small>Monthly Expenses</small><div class="value red" id="expenses">₹0</div></div>
-  <div class="card"><small>Net Profit</small><div class="value" id="profit">₹0</div></div>
+  <div class="card">
+   <small>Monthly Income</small>
+   <div class="value green" id="income">₹0</div>
+  </div>
+
+  <div class="card">
+   <small>Monthly Expenses</small>
+   <div class="value red" id="expenses">₹0</div>
+  </div>
+
+  <div class="card">
+   <small>Net Profit</small>
+   <div class="value" id="profit">₹0</div>
+  </div>
  </div>
+
  <div class="cards">
-  <div class="card"><small>Profit Margin</small><div class="value" id="margin">0%</div></div>
-  <div class="card"><small>Staff Pay</small><div class="value" id="payroll">₹0</div></div>
+  <div class="card">
+   <small>Profit Margin</small>
+   <div class="value" id="margin">0%</div>
+  </div>
+
+  <div class="card">
+   <small>Staff Pay</small>
+   <div class="value" id="payroll">₹0</div>
+  </div>
  </div>
 
  <div class="grid">
   <div class="panel">
    <h3>Income and Expenses</h3>
-   <div class="barline">Income<div class="track"><div class="fill" id="incomeBar"></div></div></div>
-   <div class="barline">Expenses<div class="track"><div class="fill redfill" id="expenseBar"></div></div></div>
+
+   <div class="barline">
+    Income
+    <div class="track">
+     <div class="fill" id="incomeBar"></div>
+    </div>
+   </div>
+
+   <div class="barline">
+    Expenses
+    <div class="track">
+     <div class="fill redfill" id="expenseBar"></div>
+    </div>
+   </div>
   </div>
+
   <div class="panel">
    <h3>Business Check</h3>
    <div class="value green" id="health">Looking good</div>
    <p class="sub" id="healthText">Your business summary appears here.</p>
   </div>
  </div>
+
  <div class="panel">
   <h3>Latest 6 Entries</h3>
   <div id="recent"></div>
@@ -122,367 +486,1270 @@ footer{text-align:center;padding:25px;color:#78847c;font-size:12px}
  </div>
 </section>
 
+<!-- MONEY ENTRY -->
+
 <section id="transactions" class="page hidden">
  <h2>Money Entry</h2>
  <p class="sub">Enter the money you received or spent.</p>
+
  <div class="panel">
   <h3>Add Money Entry</h3>
+
   <form id="txForm">
-   <div><label>What happened?</label>
+
+   <div>
+    <label>What happened?</label>
     <select id="type">
      <option value="income">Money received</option>
      <option value="expense">Money spent</option>
     </select>
    </div>
-   <div><label>How much? (₹)</label><input id="amount" type="number" min="1" placeholder="Enter amount" required></div>
-   <div><label>Choose a reason</label><select id="category"></select></div>
-   <div><label>Date</label><input id="date" type="date" required></div>
-   <div class="full"><label>What was it for? (Optional)</label><input id="description" placeholder="Write a few words"></div>
+
+   <div>
+    <label>How much? (₹)</label>
+    <input id="amount" type="number" min="1" placeholder="Enter amount" required>
+   </div>
+
+   <div class="full">
+    <label>Choose a reason</label>
+    <div id="categoryButtons" class="category-buttons"></div>
+   </div>
+
+   <div>
+    <label>Date</label>
+    <input id="date" type="date" required>
+   </div>
+
+   <div class="full">
+    <label>What was it for? (Optional)</label>
+    <input id="description" placeholder="Write a few words">
+   </div>
+
    <button class="primary full">Save Entry</button>
   </form>
  </div>
+
  <div class="panel">
   <h3>All Money Entries</h3>
+
   <div class="tablewrap">
-   <table><thead><tr><th>Date</th><th>Entry</th><th>Reason</th><th>Amount</th><th></th></tr></thead>
-   <tbody id="txTable"></tbody></table>
+   <table>
+    <thead>
+     <tr>
+      <th>Date</th>
+      <th>Entry</th>
+      <th>Reason</th>
+      <th>Amount</th>
+      <th></th>
+     </tr>
+    </thead>
+    <tbody id="txTable"></tbody>
+   </table>
   </div>
  </div>
 </section>
 
+<!-- STAFF -->
+
 <section id="staff" class="page hidden">
  <h2>Staff & Salaries</h2>
  <p class="sub">Manage your employees and their salaries.</p>
+
  <div class="panel">
   <h3>Add Employee</h3>
+
   <form id="staffForm">
-   <div><label>Employee Name</label><input id="staffName" required></div>
-   <div><label>Work / Role</label><input id="role" required></div>
-   <div><label>Monthly Salary (₹)</label><input id="salary" type="number" min="1" required></div>
-   <div><label>Salary Status</label><select id="paid"><option>Pending</option><option>Paid</option></select></div>
+   <div>
+    <label>Employee Name</label>
+    <input id="staffName" required>
+   </div>
+
+   <div>
+    <label>Work / Role</label>
+    <input id="role" required>
+   </div>
+
+   <div>
+    <label>Monthly Salary (₹)</label>
+    <input id="salary" type="number" min="1" required>
+   </div>
+
+   <div>
+    <label>Salary Status</label>
+    <select id="paid">
+     <option>Pending</option>
+     <option>Paid</option>
+    </select>
+   </div>
+
    <button class="primary full">Add Employee</button>
   </form>
  </div>
- <div class="panel"><h3>Team Members</h3><div id="staffList"></div></div>
+
+ <div class="panel">
+  <h3>Team Members</h3>
+  <div id="staffList"></div>
+ </div>
 </section>
 
+<!-- INGREDIENTS / PRODUCTS -->
+
 <section id="ingredients" class="page hidden">
- <h2>Ingredient Price Tracker</h2>
- <p class="sub">Keep a record of ingredient prices.</p>
+ <h2>Ingredients & Products</h2>
+ <p class="sub">Keep a record of ingredient and product prices.</p>
+
  <div class="panel">
-  <h3>Record Ingredient Price</h3>
+  <h3>Record a Price</h3>
+
   <form id="ingredientForm">
-   <div><label>Ingredient</label><input id="ingredientName" required></div>
-   <div><label>Price (₹)</label><input id="ingredientPrice" type="number" min="0.01" step="0.01" required></div>
-   <div><label>Unit</label><select id="unit"><option>kg</option><option>litre</option><option>piece</option><option>packet</option></select></div>
-   <div><label>Date</label><input id="ingredientDate" type="date" required></div>
+   <div>
+    <label>Ingredient / Product</label>
+    <input id="ingredientName" required>
+   </div>
+
+   <div>
+    <label>Price (₹)</label>
+    <input id="ingredientPrice" type="number" min="0.01" step="0.01" required>
+   </div>
+
+   <div>
+    <label>Unit</label>
+    <select id="unit">
+     <option>kg</option>
+     <option>litre</option>
+     <option>piece</option>
+     <option>packet</option>
+     <option>bottle</option>
+    </select>
+   </div>
+
+   <div>
+    <label>Date</label>
+    <input id="ingredientDate" type="date" required>
+   </div>
+
    <button class="primary full">Save Price</button>
   </form>
  </div>
- <div class="panel"><h3>Price History</h3><div id="ingredientList"></div></div>
+
+ <div class="panel">
+  <h3>Price History</h3>
+  <div id="ingredientList"></div>
+ </div>
 </section>
+
+<!-- SMART SUGGESTIONS -->
 
 <section id="insights" class="page hidden">
  <h2>Smart Suggestions ✨</h2>
  <p class="sub">Simple tips to help your business.</p>
- <div class="panel"><h3>Suggestions</h3><div id="insightList"></div></div>
+
+ <div class="panel">
+  <h3>Suggestions</h3>
+  <div id="insightList"></div>
+ </div>
 </section>
+
+<!-- REPORTS -->
 
 <section id="reports" class="page hidden">
  <h2>Reports</h2>
- <p class="sub">Check your business money records.</p>
+ <p class="sub">Understand where your money comes from and where it goes.</p>
+
  <div class="panel">
   <h3>Money Summary</h3>
+
   <label>Choose Time</label>
   <select id="period">
    <option value="all">All Records</option>
    <option value="month">This Month</option>
    <option value="week">Last 7 Days</option>
   </select>
+
   <div id="reportSummary"></div>
+
   <button class="primary" id="export">Download Report</button>
  </div>
+
+ <!-- EXPENSE PIE CHART -->
+
+ <div class="panel">
+  <h3>Where Is Your Money Going?</h3>
+  <p class="sub">See how your expenses are divided by category.</p>
+
+  <div class="pie-layout">
+   <div id="expensePie" class="pie-chart"></div>
+   <div id="expenseLegend" class="pie-legend"></div>
+  </div>
+ </div>
+
+ <!-- DAILY PERFORMANCE -->
+
+ <div class="panel">
+  <h3>Daily Performance 📊</h3>
+  <p class="sub">Compare today's business with yesterday.</p>
+
+  <div id="dailyComparison"></div>
+ </div>
+
+ <!-- SAVED RECORDS -->
+
  <div class="panel">
   <h3>Saved Records</h3>
   <p class="sub">Your records are saved in this browser on this device.</p>
+
   <button class="secondary" id="demo">Reload Demo Data</button>
   <button class="danger" id="clear">Clear All Data</button>
  </div>
+
 </section>
+
 </main>
 </div>
 
 <footer>SmartServe AI · Simple business money manager</footer>
 
 <script>
+
+// BASIC HELPERS
+
 const $ = id => document.getElementById(id);
+
 const today = () => {
- const d=new Date();
- return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+ const d = new Date();
+
+ return d.getFullYear()+"-"+
+ String(d.getMonth()+1).padStart(2,"0")+"-"+
+ String(d.getDate()).padStart(2,"0");
 };
-const money = n => "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:0});
+
+const dateBefore = days => {
+ const d = new Date();
+ d.setDate(d.getDate()-days);
+
+ return d.getFullYear()+"-"+
+ String(d.getMonth()+1).padStart(2,"0")+"-"+
+ String(d.getDate()).padStart(2,"0");
+};
+
+const money = n => "₹"+Number(n||0).toLocaleString("en-IN",{
+ maximumFractionDigits:0
+});
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,char=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ })[char]);
+}
+
+// BUSINESS CATEGORIES
 
 const categories = {
+
  restaurant:{
-  income:["Food Sales","Online Orders","Takeaway","Other Income"],
-  expense:["Food Ingredients","Vegetables","Meat / Chicken","Oil","Electricity","Water","Rent","Packaging","Other"]
+  income:[
+   "Food Sales",
+   "Online Orders",
+   "Takeaway",
+   "Other Income"
+  ],
+  expense:[
+   "Food Ingredients",
+   "Vegetables",
+   "Meat / Chicken",
+   "Oil",
+   "Electricity",
+   "Water",
+   "Rent",
+   "Packaging",
+   "Other"
+  ]
  },
+
  tea:{
-  income:["Tea Sales","Coffee Sales","Snacks Sales","Other Income"],
-  expense:["Milk","Tea Powder","Coffee Powder","Sugar","Snacks","Cups / Packets","Electricity","Rent","Water","Other"]
+  income:[
+   "Tea Sales",
+   "Coffee Sales",
+   "Snacks Sales",
+   "Other Income"
+  ],
+  expense:[
+   "Milk",
+   "Tea Powder",
+   "Coffee Powder",
+   "Sugar",
+   "Snacks",
+   "Cups / Packets",
+   "Electricity",
+   "Rent",
+   "Water",
+   "Other"
+  ]
+ },
+
+ salon:{
+  income:[
+   "Haircut",
+   "Hair Colour",
+   "Facial",
+   "Hair Spa",
+   "Other Services"
+  ],
+  expense:[
+   "Hair Products",
+   "Beauty Products",
+   "Shampoo",
+   "Equipment",
+   "Electricity",
+   "Rent",
+   "Water",
+   "Other"
+  ]
  }
 };
 
+// LOAD SAVED DATA
+
 let business=localStorage.getItem("smartserve_business")||"";
+
 let data;
-try{data=JSON.parse(localStorage.getItem("smartserve_data"))}catch(e){data=null}
+
+try{
+ data=JSON.parse(localStorage.getItem("smartserve_data"));
+}catch(e){
+ data=null;
+}
+
+// DEMO DATA
 
 function makeDemo(){
+
  const tx=[];
- const inc=["Food Sales","Online Orders","Takeaway","Food Sales","Other Income"];
- const exp=["Food Ingredients","Vegetables","Meat / Chicken","Oil","Electricity"];
+
+ const selected=categories[business]||categories.restaurant;
+
  for(let i=0;i<30;i++){
-  let d=new Date();
+
+  const d=new Date();
   d.setDate(d.getDate()-29+i);
-  let date=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-  tx.push({id:i+"i",type:"income",category:inc[i%inc.length],amount:Math.round(350000/30),date,description:"Daily sales"});
-  tx.push({id:i+"e",type:"expense",category:exp[i%exp.length],amount:Math.round(255000/30),date,description:"Daily expense"});
+
+  const date=d.getFullYear()+"-"+
+   String(d.getMonth()+1).padStart(2,"0")+"-"+
+   String(d.getDate()).padStart(2,"0");
+
+  tx.push({
+   id:i+"i",
+   type:"income",
+   category:selected.income[i%selected.income.length],
+   amount:Math.round(350000/30),
+   date,
+   description:"Daily sales"
+  });
+
+  tx.push({
+   id:i+"e",
+   type:"expense",
+   category:selected.expense[i%selected.expense.length],
+   amount:Math.round(255000/30),
+   date,
+   description:"Daily expense"
+  });
  }
+
  return {
   tx,
+
   staff:[
-   {name:"Rahul",role:"Head Chef",salary:22000,paid:"Paid"},
+   {name:"Rahul",role:"Employee",salary:22000,paid:"Paid"},
    {name:"Priya",role:"Cashier",salary:15000,paid:"Paid"},
-   {name:"Arjun",role:"Waiter",salary:12000,paid:"Pending"},
-   {name:"Meena",role:"Kitchen Assistant",salary:11000,paid:"Paid"}
+   {name:"Arjun",role:"Assistant",salary:12000,paid:"Pending"}
   ],
+
   ingredients:[
-   {name:"Rice",price:68,unit:"kg",date:today()},
-   {name:"Chicken",price:240,unit:"kg",date:today()},
-   {name:"Cooking Oil",price:155,unit:"litre",date:today()},
-   {name:"Vegetables",price:45,unit:"kg",date:today()}
+   {name:"Main Product",price:68,unit:"kg",date:today()},
+   {name:"Other Product",price:120,unit:"kg",date:today()}
   ]
  };
 }
-if(!data||!Array.isArray(data.tx))data=makeDemo();
+
+if(!data||!Array.isArray(data.tx)){
+ data=makeDemo();
+}
+
 if(!Array.isArray(data.staff))data.staff=[];
 if(!Array.isArray(data.ingredients))data.ingredients=[];
 
+// SELECT BUSINESS
+
 function chooseBusiness(type){
+
  business=type;
+
  localStorage.setItem("smartserve_business",business);
+
  startApp();
 }
+
+function showBusinessChooser(){
+
+ $("app").classList.add("hidden");
+ $("businessChooser").classList.remove("hidden");
+}
+
 function startApp(){
+
  $("businessChooser").classList.add("hidden");
  $("app").classList.remove("hidden");
- $("tagline").textContent=business==="tea"?"Simple tea shop money manager":"Simple restaurant money manager";
- $("dashTitle").textContent=business==="tea"?"Tea Shop Dashboard 👋":"Restaurant Dashboard 👋";
+
+ const names={
+  restaurant:"Restaurant",
+  tea:"Tea Shop",
+  salon:"Salon"
+ };
+
+ $("tagline").textContent="Simple "+names[business]+" money manager";
+ $("dashTitle").textContent=names[business]+" Dashboard 👋";
+
  updateCategories();
  render();
 }
+
+// SAVE DATA
+
 function save(){
+
  localStorage.setItem("smartserve_data",JSON.stringify(data));
+
  render();
 }
+
+// CALCULATE TOTALS
+
 function totals(list){
- const income=list.filter(x=>x.type==="income").reduce((s,x)=>s+Number(x.amount),0);
- const expenses=list.filter(x=>x.type==="expense").reduce((s,x)=>s+Number(x.amount),0);
- return {income,expenses,profit:income-expenses,margin:income?(income-expenses)/income*100:0};
+
+ const income=list
+  .filter(x=>x.type==="income")
+  .reduce((s,x)=>s+Number(x.amount),0);
+
+ const expenses=list
+  .filter(x=>x.type==="expense")
+  .reduce((s,x)=>s+Number(x.amount),0);
+
+ return {
+  income,
+  expenses,
+  profit:income-expenses,
+  margin:income?(income-expenses)/income*100:0
+ };
 }
+
 function currentMonth(list){
- return list.filter(x=>x.date&&x.date.slice(0,7)===today().slice(0,7));
+
+ return list.filter(x=>
+  x.date&&x.date.slice(0,7)===today().slice(0,7)
+ );
 }
+
+// CATEGORY BUTTONS
+
+let selectedCategory="";
+
 function updateCategories(){
+
  const type=$("type").value;
- const old=$("category").value;
- const options=categories[business||"restaurant"][type];
- $("category").innerHTML=options.map(x=>`<option>${x}</option>`).join("");
- if(options.includes(old))$("category").value=old;
+
+ const options=categories[business]||categories.restaurant;
+
+ const list=options[type];
+
+ selectedCategory=list[0];
+
+ $("categoryButtons").innerHTML=list.map(item=>`
+  <button
+   type="button"
+   class="category-btn ${item===selectedCategory?"selected":""}"
+   data-category="${escapeHTML(item)}">
+   ${escapeHTML(item)}
+  </button>
+ `).join("");
 }
+
+$("categoryButtons").addEventListener("click",e=>{
+
+ const button=e.target.closest("[data-category]");
+
+ if(!button)return;
+
+ selectedCategory=button.dataset.category;
+
+ document.querySelectorAll(".category-btn").forEach(btn=>{
+  btn.classList.toggle(
+   "selected",
+   btn.dataset.category===selectedCategory
+  );
+ });
+});
+
+// MAIN DASHBOARD
+
 function render(){
+
  const daily=data.tx.filter(x=>x.date===today());
+
  const dt=totals(daily);
+
  const monthly=currentMonth(data.tx);
+
  const mt=totals(monthly);
 
  $("todayIncome").textContent=money(dt.income);
  $("todayExpense").textContent=money(dt.expenses);
  $("todayProfit").textContent=money(dt.profit);
+
  $("todayProfit").className="value "+(dt.profit>=0?"green":"red");
 
  $("income").textContent=money(mt.income);
  $("expenses").textContent=money(mt.expenses);
  $("profit").textContent=money(mt.profit);
+
  $("profit").className="value "+(mt.profit>=0?"green":"red");
+
  $("margin").textContent=mt.margin.toFixed(1)+"%";
- $("payroll").textContent=money(data.staff.reduce((s,x)=>s+Number(x.salary),0));
+
+ $("payroll").textContent=money(
+  data.staff.reduce((s,x)=>s+Number(x.salary),0)
+ );
 
  const max=Math.max(mt.income,mt.expenses,1);
+
  $("incomeBar").style.width=(mt.income/max*100)+"%";
  $("expenseBar").style.width=(mt.expenses/max*100)+"%";
- $("health").textContent=mt.profit>=0?"You are earning money":"You are spending more than you earn";
- $("healthText").textContent=mt.income?"Your profit this month is "+money(mt.profit)+".":"Add your income and expenses to see your business summary.";
 
- const recent=[...data.tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);
+ $("health").textContent=mt.profit>=0
+  ?"You are earning money"
+  :"You are spending more than you earn";
+
+ $("healthText").textContent=mt.income
+  ?"Your profit this month is "+money(mt.profit)+"."
+  :"Add your income and expenses to see your business summary.";
+
+ // RECENT ENTRIES
+
+ const recent=[...data.tx]
+  .sort((a,b)=>b.date.localeCompare(a.date))
+  .slice(0,6);
+
  $("recent").innerHTML=recent.map(x=>`
- <div class="rowitem">
-  <span>${x.category}<br><small>${x.date}</small></span>
-  <b class="${x.type==="income"?"green":"red"}">${x.type==="income"?"+":"-"}${money(x.amount)}</b>
- </div>`).join("")||"No entries yet.";
+  <div class="rowitem">
+   <span>
+    ${escapeHTML(x.category)}
+    <br>
+    <small>${escapeHTML(x.date)}</small>
+   </span>
 
- $("txTable").innerHTML=[...data.tx].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`
- <tr>
-  <td>${x.date}</td>
-  <td>${x.type==="income"?"Received":"Spent"}</td>
-  <td>${x.category}</td>
-  <td>${money(x.amount)}</td>
-  <td><button class="danger" onclick="removeTx('${x.id}')">Delete</button></td>
- </tr>`).join("")||'<tr><td colspan="5">No entries yet.</td></tr>';
+   <b class="${x.type==="income"?"green":"red"}">
+    ${x.type==="income"?"+":"-"}${money(x.amount)}
+   </b>
+  </div>
+ `).join("")||"No entries yet.";
+
+ // ALL TRANSACTIONS
+
+ $("txTable").innerHTML=[...data.tx]
+  .sort((a,b)=>b.date.localeCompare(a.date))
+  .map(x=>`
+   <tr>
+    <td>${escapeHTML(x.date)}</td>
+    <td>${x.type==="income"?"Received":"Spent"}</td>
+    <td>${escapeHTML(x.category)}</td>
+    <td>${money(x.amount)}</td>
+    <td>
+     <button class="danger" data-delete-tx="${escapeHTML(x.id)}">Delete</button>
+    </td>
+   </tr>
+  `).join("")||'<tr><td colspan="5">No entries yet.</td></tr>';
+
+ // STAFF
 
  $("staffList").innerHTML=data.staff.map((x,i)=>`
- <div class="rowitem">
-  <span><b>${x.name}</b><br>${x.role} · ${x.paid}</span>
-  <span>${money(x.salary)} <button class="danger" onclick="removeStaff(${i})">×</button></span>
- </div>`).join("")||"No employees added.";
+  <div class="rowitem">
+   <span>
+    <b>${escapeHTML(x.name)}</b>
+    <br>
+    ${escapeHTML(x.role)} · ${escapeHTML(x.paid)}
+   </span>
+
+   <span>
+    ${money(x.salary)}
+    <button class="danger" data-delete-staff="${i}">×</button>
+   </span>
+  </div>
+ `).join("")||"No employees added.";
+
+ // INGREDIENTS AND PRODUCTS
 
  $("ingredientList").innerHTML=data.ingredients.map((x,i)=>`
- <div class="rowitem">
-  <span><b>${x.name}</b><br>${x.date} · per ${x.unit}</span>
-  <span>${money(x.price)} <button class="danger" onclick="removeIngredient(${i})">×</button></span>
- </div>`).join("")||"No prices recorded.";
+  <div class="rowitem">
+   <span>
+    <b>${escapeHTML(x.name)}</b>
+    <br>
+    ${escapeHTML(x.date)} · per ${escapeHTML(x.unit)}
+   </span>
+
+   <span>
+    ${money(x.price)}
+    <button class="danger" data-delete-ingredient="${i}">×</button>
+   </span>
+  </div>
+ `).join("")||"No prices recorded.";
+
+ // SIMPLE SUGGESTIONS
 
  const insights=[];
- if(mt.income===0)insights.push("Add the money you receive to see how your business is doing.");
- else if(mt.profit>=0)insights.push("Good! Your business has earned "+money(mt.profit)+" this month.");
- else insights.push("You have spent more than you received this month. Check your expenses.");
+
+ if(mt.income===0){
+
+  insights.push("Add the money you receive to see how your business is doing.");
+
+ }else if(mt.profit>=0){
+
+  insights.push("Good! Your business has earned "+money(mt.profit)+" this month.");
+
+ }else{
+
+  insights.push("You have spent more than you received this month. Check your expenses.");
+
+ }
 
  const costs={};
+
  monthly.filter(x=>x.type==="expense").forEach(x=>{
+
   costs[x.category]=(costs[x.category]||0)+Number(x.amount);
+
  });
+
  const biggest=Object.entries(costs).sort((a,b)=>b[1]-a[1])[0];
- if(biggest)insights.push("You spent the most on "+biggest[0]+": "+money(biggest[1])+". Check if you can reduce this cost.");
- insights.push("Monthly staff pay is "+money(data.staff.reduce((s,x)=>s+Number(x.salary),0))+".");
- $("insightList").innerHTML=insights.map(x=>`<div class="insight">💡 ${x}</div>`).join("");
+
+ if(biggest){
+
+  insights.push(
+   "You spent the most on "+biggest[0]+": "+money(biggest[1])+". Check if you can reduce this cost."
+  );
+
+ }
+
+ insights.push(
+  "Monthly staff pay is "+money(
+   data.staff.reduce((s,x)=>s+Number(x.salary),0)
+  )+"."
+ );
+
+ $("insightList").innerHTML=insights.map(x=>
+  `<div class="insight">💡 ${escapeHTML(x)}</div>`
+ ).join("");
+
  report();
 }
-function report(){
- let list=data.tx;
- const period=$("period").value;
- const now=new Date();
- if(period==="month")list=currentMonth(list);
- if(period==="week")list=list.filter(x=>(now-new Date(x.date+"T00:00:00"))/86400000<7);
- const t=totals(list);
- $("reportSummary").innerHTML=`
- <div class="rowitem">Money received <b class="green">${money(t.income)}</b></div>
- <div class="rowitem">Money spent <b class="red">${money(t.expenses)}</b></div>
- <div class="rowitem">Profit <b>${money(t.profit)}</b></div>
- <div class="rowitem">Profit margin <b>${t.margin.toFixed(1)}%</b></div>
- <div class="rowitem">Number of entries <b>${list.length}</b></div>`;
-}
+
+// DELETE RECORDS
+
 function removeTx(id){
+
  if(confirm("Delete this entry?")){
+
   data.tx=data.tx.filter(x=>String(x.id)!==String(id));
+
   save();
  }
 }
+
 function removeStaff(i){
+
  if(confirm("Remove this employee?")){
+
   data.staff.splice(i,1);
+
   save();
  }
 }
+
 function removeIngredient(i){
+
  if(confirm("Delete this price record?")){
+
   data.ingredients.splice(i,1);
+
   save();
  }
 }
+
+// DELETE BUTTON EVENTS
+
+document.addEventListener("click",e=>{
+
+ const tx=e.target.closest("[data-delete-tx]");
+ const staff=e.target.closest("[data-delete-staff]");
+ const ingredient=e.target.closest("[data-delete-ingredient]");
+
+ if(tx)removeTx(tx.dataset.deleteTx);
+
+ if(staff)removeStaff(Number(staff.dataset.deleteStaff));
+
+ if(ingredient)removeIngredient(Number(ingredient.dataset.deleteIngredient));
+
+});
+
+// REPORT DATE FILTER
+
+function getReportList(){
+
+ let list=data.tx;
+
+ const period=$("period").value;
+
+ if(period==="month"){
+
+  list=currentMonth(list);
+
+ }
+
+ if(period==="week"){
+
+  const start=dateBefore(6);
+  const end=today();
+
+  list=list.filter(x=>x.date>=start&&x.date<=end);
+
+ }
+
+ return list;
+}
+
+// EXPENSE PIE CHART
+
+function showExpensePie(list){
+
+ const expenses=list.filter(x=>x.type==="expense");
+
+ const totalsByCategory={};
+
+ expenses.forEach(x=>{
+
+  totalsByCategory[x.category]=
+   (totalsByCategory[x.category]||0)+Number(x.amount);
+
+ });
+
+ const entries=Object.entries(totalsByCategory)
+  .sort((a,b)=>b[1]-a[1]);
+
+ const total=entries.reduce((s,x)=>s+x[1],0);
+
+ if(!total){
+
+  $("expensePie").style.background="#edf1ec";
+
+  $("expenseLegend").innerHTML="No expense records for this period.";
+
+  return;
+ }
+
+ const colors=[
+  "#E6A23C",
+  "#4B91A8",
+  "#83A879",
+  "#A78BC2",
+  "#D47D70",
+  "#8B9C79",
+  "#D2B36C",
+  "#729B9B",
+  "#999999",
+  "#B17B9C"
+ ];
+
+ let currentAngle=0;
+
+ const parts=[];
+
+ entries.forEach((item,i)=>{
+
+  const percentage=item[1]/total*360;
+
+  const nextAngle=currentAngle+percentage;
+
+  parts.push(
+   `${colors[i%colors.length]} ${currentAngle}deg ${nextAngle}deg`
+  );
+
+  currentAngle=nextAngle;
+
+ });
+
+ $("expensePie").style.background=
+  "conic-gradient("+parts.join(",")+")";
+
+ $("expenseLegend").innerHTML=entries.map((item,i)=>{
+
+  const percentage=(item[1]/total*100).toFixed(1);
+
+  return `
+   <div class="legend-item">
+    <span class="legend-dot" style="background:${colors[i%colors.length]}"></span>
+    <span class="legend-name">${escapeHTML(item[0])}</span>
+    <b>${money(item[1])}</b>
+    <small>${percentage}%</small>
+   </div>
+  `;
+
+ }).join("");
+
+}
+
+// DAILY PERFORMANCE COMPARISON
+
+function comparisonMessage(current,previous,label,lowerIsBetter=false){
+
+ if(current===previous){
+
+  return label+" is the same as yesterday.";
+
+ }
+
+ if(previous===0&&current===0){
+
+  return "No "+label.toLowerCase()+" records for either day.";
+
+ }
+
+ if(previous===0){
+
+  return "You recorded "+money(current)+" in "+label.toLowerCase()+" today. There were no records yesterday.";
+
+ }
+
+ const difference=current-previous;
+
+ const percentage=Math.abs(difference/previous*100).toFixed(1);
+
+ const increased=difference>0;
+
+ let result="";
+
+ if(increased){
+
+  result=label+" increased by "+percentage+"% compared to yesterday.";
+
+ }else{
+
+  result=label+" decreased by "+percentage+"% compared to yesterday.";
+
+ }
+
+ if(lowerIsBetter){
+
+  result+=increased
+   ?" This needs attention."
+   :" This is a positive change.";
+
+ }else{
+
+  result+=increased
+   ?" This is a positive change."
+   :" This needs attention.";
+
+ }
+
+ return result;
+}
+
+function showDailyPerformance(){
+
+ const todayList=data.tx.filter(x=>x.date===today());
+
+ const yesterdayList=data.tx.filter(x=>x.date===dateBefore(1));
+
+ const todayTotals=totals(todayList);
+
+ const yesterdayTotals=totals(yesterdayList);
+
+ const metrics=[
+  {
+   name:"Income",
+   current:todayTotals.income,
+   previous:yesterdayTotals.income,
+   color:"today-bar",
+   inverse:false
+  },
+  {
+   name:"Expenses",
+   current:todayTotals.expenses,
+   previous:yesterdayTotals.expenses,
+   color:"today-expense-bar",
+   inverse:true
+  },
+  {
+   name:"Profit",
+   current:todayTotals.profit,
+   previous:yesterdayTotals.profit,
+   color:"today-bar",
+   inverse:false
+  }
+ ];
+
+ const messages=metrics.map(x=>
+  comparisonMessage(
+   x.current,
+   x.previous,
+   x.name,
+   x.inverse
+  )
+ );
+
+ const graph=metrics.map(item=>{
+
+  const maximum=Math.max(
+   Math.abs(item.current),
+   Math.abs(item.previous),
+   1
+  );
+
+  const todayWidth=Math.abs(item.current)/maximum*100;
+  const yesterdayWidth=Math.abs(item.previous)/maximum*100;
+
+  return `
+   <div class="performance-row">
+
+    <div class="performance-title">
+     <span>${item.name}</span>
+     <span>${money(item.current)}</span>
+    </div>
+
+    <div class="graph-line">
+     <span>Yesterday</span>
+     <div class="graph-track">
+      <div class="graph-bar yesterday-bar"
+       style="width:${yesterdayWidth}%"></div>
+     </div>
+    </div>
+
+    <div class="graph-line">
+     <span>Today</span>
+     <div class="graph-track">
+      <div class="graph-bar ${item.color}"
+       style="width:${todayWidth}%"></div>
+     </div>
+    </div>
+
+   </div>
+  `;
+
+ }).join("");
+
+ $("dailyComparison").innerHTML=`
+  ${graph}
+
+  <div class="performance-message">
+   <b>What changed today?</b>
+   ${messages.map(x=>`<p>• ${escapeHTML(x)}</p>`).join("")}
+  </div>
+ `;
+
+}
+
+// MAIN REPORT FUNCTION
+
+function report(){
+
+ const list=getReportList();
+
+ const t=totals(list);
+
+ const incomeCount=list.filter(x=>x.type==="income").length;
+
+ const expenseCount=list.filter(x=>x.type==="expense").length;
+
+ $("reportSummary").innerHTML=`
+
+  <div class="rowitem">
+   Money received
+   <b class="green">${money(t.income)}</b>
+  </div>
+
+  <div class="rowitem">
+   Money spent
+   <b class="red">${money(t.expenses)}</b>
+  </div>
+
+  <div class="rowitem">
+   Net profit
+   <b>${money(t.profit)}</b>
+  </div>
+
+  <div class="rowitem">
+   Profit margin
+   <b>${t.margin.toFixed(1)}%</b>
+  </div>
+
+  <div class="rowitem">
+   Money received entries
+   <b>${incomeCount}</b>
+  </div>
+
+  <div class="rowitem">
+   Money spent entries
+   <b>${expenseCount}</b>
+  </div>
+
+  <div class="rowitem">
+   Total entries
+   <b>${list.length}</b>
+  </div>
+
+ `;
+
+ showExpensePie(list);
+
+ showDailyPerformance();
+}
+
+// NAVIGATION
+
 $("nav").addEventListener("click",e=>{
- const b=e.target.closest("button[data-page]");
- if(!b)return;
- document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
- $(b.dataset.page).classList.remove("hidden");
- document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));
+
+ const button=e.target.closest("button[data-page]");
+
+ if(!button)return;
+
+ document.querySelectorAll(".page").forEach(p=>
+  p.classList.add("hidden")
+ );
+
+ $(button.dataset.page).classList.remove("hidden");
+
+ document.querySelectorAll("nav button").forEach(x=>
+  x.classList.toggle("active",x===button)
+ );
+
 });
+
+// MONEY ENTRY FORM
+
 $("type").addEventListener("change",updateCategories);
+
 $("txForm").addEventListener("submit",e=>{
+
  e.preventDefault();
+
  const amount=Number($("amount").value);
- if(amount<=0)return alert("Please enter a valid amount.");
+
+ if(amount<=0){
+
+  return alert("Please enter a valid amount.");
+
+ }
+
+ if(!selectedCategory){
+
+  return alert("Please choose a reason.");
+
+ }
+
  data.tx.push({
+
   id:Date.now().toString(),
+
   type:$("type").value,
+
   amount,
-  category:$("category").value,
+
+  category:selectedCategory,
+
   date:$("date").value,
+
   description:$("description").value
+
  });
+
  e.target.reset();
+
  $("date").value=today();
+
  updateCategories();
+
  save();
+
  alert("Your entry has been saved!");
+
 });
+
+// STAFF FORM
+
 $("staffForm").addEventListener("submit",e=>{
+
  e.preventDefault();
+
  const salary=Number($("salary").value);
- if(salary<=0)return alert("Please enter a valid salary.");
+
+ if(salary<=0){
+
+  return alert("Please enter a valid salary.");
+
+ }
+
  data.staff.push({
+
   name:$("staffName").value,
+
   role:$("role").value,
+
   salary,
+
   paid:$("paid").value
+
  });
+
  e.target.reset();
+
  save();
+
  alert("Employee added!");
+
 });
+
+// INGREDIENT FORM
+
 $("ingredientForm").addEventListener("submit",e=>{
+
  e.preventDefault();
+
  const price=Number($("ingredientPrice").value);
- if(price<=0)return alert("Please enter a valid price.");
+
+ if(price<=0){
+
+  return alert("Please enter a valid price.");
+
+ }
+
  data.ingredients.push({
+
   name:$("ingredientName").value,
+
   price,
+
   unit:$("unit").value,
+
   date:$("ingredientDate").value
+
  });
+
  e.target.reset();
+
  $("ingredientDate").value=today();
+
  save();
+
  alert("Price saved!");
+
 });
+
+// REPORT FILTER
+
 $("period").addEventListener("change",report);
+
+// DOWNLOAD CSV
+
 $("export").addEventListener("click",()=>{
+
  const rows=[
   ["Date","Type","Category","Amount","Description"],
-  ...data.tx.map(x=>[x.date,x.type,x.category,x.amount,x.description||""])
+  ...getReportList().map(x=>[
+   x.date,
+   x.type,
+   x.category,
+   x.amount,
+   x.description||""
+  ])
  ];
- const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");
+
+ const csv=rows.map(r=>
+  r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")
+ ).join("\n");
+
+ const blob=new Blob(["\uFEFF"+csv],{
+  type:"text/csv;charset=utf-8;"
+ });
+
+ const url=URL.createObjectURL(blob);
+
  const a=document.createElement("a");
- a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+
+ a.href=url;
  a.download="smartserve-report.csv";
  a.click();
- URL.revokeObjectURL(a.href);
+
+ URL.revokeObjectURL(url);
+
 });
+
+// RELOAD DEMO DATA
+
 $("demo").addEventListener("click",()=>{
+
  if(confirm("Replace your records with demo data?")){
+
   data=makeDemo();
+
   save();
+
  }
+
 });
+
+// CLEAR ALL DATA
+
 $("clear").addEventListener("click",()=>{
+
  if(confirm("Delete all records saved on this device?")){
-  data={tx:[],staff:[],ingredients:[]};
+
+  data={
+   tx:[],
+   staff:[],
+   ingredients:[]
+  };
+
   save();
+
  }
+
 });
+
+// INITIAL DATES
+
 $("date").value=today();
+
 $("ingredientDate").value=today();
-if(business==="restaurant"||business==="tea")startApp();
-else $("businessChooser").classList.remove("hidden");
+
+// START APPLICATION
+
+if(
+ business==="restaurant"||
+ business==="tea"||
+ business==="salon"
+){
+
+ startApp();
+
+}else{
+
+ $("businessChooser").classList.remove("hidden");
+
+}
+
 </script>
 </body>
 </html>
