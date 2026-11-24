@@ -1,1036 +1,725 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartServe AI</title>
 <style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#687386;--blue:#315efb;--green:#15966a;--red:#df5353;--line:#e8ecf3}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#202b3c}
-header{background:#172b4d;color:white;padding:20px}
+body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--ink)}
+header{background:#172b4d;color:white;padding:20px 16px}
 header h1{margin:0;font-size:25px}
-header p{margin:7px 0 0;color:#cbd5e1;font-size:13px}
-.container{max-width:1050px;margin:auto;padding:15px}
-button,select,input,textarea{font:inherit}
-button{cursor:pointer;border:0;border-radius:9px;padding:11px 14px;background:#e8edf5;color:#24334b}
-.primary{background:#244d80;color:white}
-.danger{background:#fff0f0;color:#c03939}
-.business-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.business-btn.active,.nav-btn.active{background:#244d80;color:white}
-nav{display:flex;gap:7px;overflow-x:auto;padding:8px 0 15px}
-.nav-btn{white-space:nowrap}
-.panel{display:none}
-.panel.active{display:block}
-h2{font-size:21px;margin:12px 0}
-h3{font-size:16px;margin:0 0 12px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px;margin:14px 0}
-.card,.section{background:white;border-radius:13px;padding:16px;box-shadow:0 2px 10px #182b4510;margin-bottom:14px}
-.card small{color:#64748b}
-.card strong{display:block;font-size:21px;margin-top:9px}
-.green{color:#12845b}
-.red{color:#d34c4c}
-.muted{color:#64748b;font-size:13px;line-height:1.5}
-form{display:grid;gap:12px}
-label{font-size:13px;font-weight:bold;color:#46546a}
-input,select,textarea{width:100%;padding:11px;border:1px solid #d7deea;border-radius:8px;background:white;margin-top:5px}
-textarea{min-height:110px;resize:vertical}
-.category-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.category-btn{border:1px solid #d7deea;background:white;padding:9px 11px}
-.category-btn.selected{background:#e2edff;border-color:#244d80;color:#244d80}
-.entry,.staff-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #edf0f5}
-.entry:last-child,.staff-item:last-child{border-bottom:0}
-.entry small{display:block;color:#64748b;margin-top:4px}
-.entry button,.staff-item button{padding:7px 9px;font-size:12px}
-.bar-bg{height:10px;background:#edf0f5;border-radius:10px;overflow:hidden;margin-top:7px}
-.bar{height:100%;border-radius:10px;background:#477bb8}
-.bar.expense{background:#e58a72}
-.chart-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.pie{width:155px;height:155px;border-radius:50%;background:#e8edf5;flex-shrink:0}
-.legend{flex:1;min-width:180px}
-.legend-row{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin:9px 0}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
-.message{background:#eef4fb;border-radius:9px;padding:12px;margin-top:10px;font-size:13px;line-height:1.5}
-.empty{color:#8290a4;text-align:center;padding:18px}
-.small-btn{font-size:12px;padding:7px 9px}
-.preview{max-width:100%;max-height:220px;object-fit:contain;border-radius:9px;margin-top:10px}
-.reason-note{background:#f1f5fa;padding:10px;border-radius:8px;font-size:12px;color:#64748b;margin-top:9px}
-@media(max-width:500px){
- header{padding:17px}
- .container{padding:12px}
- .card strong{font-size:19px}
- .chart-wrap{justify-content:center}
-}
+header p{margin:6px 0 0;color:#d3def3;font-size:13px}
+main{max-width:1050px;margin:auto;padding:16px}
+.topbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+select,input,button{font:inherit}
+select,input{border:1px solid var(--line);border-radius:9px;padding:11px;background:white;max-width:100%}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:white;cursor:pointer;font-weight:600}
+button.secondary{background:#eaf0ff;color:#2449c7}
+button.danger{background:#fff0f0;color:#c33}
+button.small{padding:7px 10px;font-size:12px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px}
+nav button{white-space:nowrap;background:#e7ebf3;color:#34415a}
+nav button.active{background:var(--blue);color:white}
+.page{display:none}
+.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 12px;font-size:16px}
+.metric{font-size:25px;font-weight:700;margin-top:8px}
+.muted{color:var(--muted);font-size:13px}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;color:var(--muted);font-weight:600}
+.full{grid-column:1/-1}
+.typebuttons{display:flex;gap:8px;margin-bottom:14px}
+.typebuttons button{flex:1;background:#e7ebf3;color:#34415a}
+.typebuttons button.active.income{background:#dff6eb;color:#08794e}
+.typebuttons button.active.expense{background:#ffe8e8;color:#bd3333}
+.reason-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.reason-buttons button{background:#edf1fa;color:#34415a;font-size:13px}
+.reason-buttons button.selected{background:var(--blue);color:white}
+.rowitem{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rowitem:last-child{border-bottom:0}
+.rowitem strong{font-size:14px}
+.rowitem small{display:block;color:var(--muted);margin-top:4px}
+.amount{font-weight:700;white-space:nowrap}
+.empty{color:var(--muted);font-size:13px;padding:12px 0}
+.barline{height:10px;background:#edf0f6;border-radius:20px;overflow:hidden;margin:6px 0 12px}
+.barline span{display:block;height:100%;border-radius:20px;background:var(--blue)}
+canvas{width:100%;max-height:260px}
+.pie-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+#pieChart{width:190px;height:190px;max-height:190px}
+.legend{flex:1;min-width:140px}
+.legend div{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:5px 0}
+.notice{background:#eef3ff;padding:12px;border-radius:10px;font-size:13px;color:#34415a;margin-top:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+@media(max-width:500px){main{padding:11px}.card{padding:13px}.metric{font-size:22px}}
 </style>
 </head>
 <body>
-
 <header>
   <h1>SmartServe AI</h1>
-  <p>Your simple business income and expense tracker</p>
+  <p>Your simple business income, expense and profit tracker</p>
 </header>
 
-<div class="container">
-
-  <div class="business-row">
-    <button class="business-btn active" data-business="Restaurant">🍽️ Restaurant</button>
-    <button class="business-btn" data-business="Tea Shop">☕ Tea Shop</button>
-    <button class="business-btn" data-business="Salon">💇 Salon</button>
+<main>
+  <div class="topbar">
+    <strong>Business:</strong>
+    <select id="businessSelect">
+      <option>Restaurant</option>
+      <option>Tea Shop</option>
+      <option>Salon</option>
+    </select>
+    <span class="muted">Demo data is available for all three.</span>
   </div>
 
   <nav>
-    <button class="nav-btn active" data-page="home">Home</button>
-    <button class="nav-btn" data-page="entry">Money Entry</button>
-    <button class="nav-btn" data-page="staff">Staff & Salaries</button>
-    <button class="nav-btn" data-page="suggestions">Suggestions</button>
-    <button class="nav-btn" data-page="reports">Reports</button>
+    <button class="active" data-page="home">Dashboard</button>
+    <button data-page="entry">Money Entry</button>
+    <button data-page="staff">Staff & Salaries</button>
+    <button data-page="suggestions">Suggestions</button>
+    <button data-page="reports">Reports</button>
   </nav>
 
-  <!-- HOME -->
-  <section id="home" class="panel active">
-    <h2 id="homeTitle">Restaurant Dashboard</h2>
-
-    <div class="cards">
-      <div class="card"><small>Today's Income</small><strong class="green" id="todayIncome">₹0</strong></div>
-      <div class="card"><small>Today's Expenses</small><strong class="red" id="todayExpense">₹0</strong></div>
-      <div class="card"><small>Today's Profit</small><strong id="todayProfit">₹0</strong></div>
-      <div class="card"><small>This Month's Profit</small><strong id="monthProfit">₹0</strong></div>
+  <!-- DASHBOARD -->
+  <section class="page active" id="home">
+    <div class="grid">
+      <div class="card"><div class="muted">Today's Income</div><div class="metric green" id="todayIncome">₹0</div></div>
+      <div class="card"><div class="muted">Today's Expenses</div><div class="metric red" id="todayExpense">₹0</div></div>
+      <div class="card"><div class="muted">Today's Profit</div><div class="metric" id="todayProfit">₹0</div></div>
+      <div class="card"><div class="muted">This Month's Profit</div><div class="metric" id="monthProfit">₹0</div></div>
     </div>
 
-    <div class="section">
-      <h3>Today's Business Performance</h3>
-      <p class="muted">Income compared with expenses</p>
-      <div id="todayBars"></div>
+    <div class="card">
+      <h3>Today's Business Summary</h3>
+      <p class="muted" id="todayMessage">Your daily summary will appear here.</p>
+      <div class="barline"><span id="todayBar" style="width:0%"></span></div>
+      <div class="muted" id="barCaption">Income compared with expenses</div>
     </div>
 
-    <div class="section">
-      <h3>Business Check</h3>
-      <div id="businessCheck" class="message"></div>
-    </div>
-
-    <div class="section">
+    <div class="card">
       <h3>Latest Transactions</h3>
-      <div id="latestEntries"></div>
+      <div id="recentTransactions"></div>
     </div>
   </section>
 
   <!-- MONEY ENTRY -->
-  <section id="entry" class="panel">
-    <h2>Money Entry</h2>
+  <section class="page" id="entry">
+    <div class="card">
+      <h3>Add Money Entry</h3>
+      <div class="typebuttons">
+        <button class="active income" id="incomeType" type="button">Income</button>
+        <button class="expense" id="expenseType" type="button">Expense</button>
+      </div>
 
-    <div class="section">
-      <form id="entryForm">
-        <div>
-          <label>Transaction Type</label>
-          <select id="entryType">
-            <option value="income">Income – Money Received</option>
-            <option value="expense">Expense – Money Spent</option>
-          </select>
-        </div>
+      <div class="field">
+        <label>Choose a Reason</label>
+        <div class="reason-buttons" id="reasonButtons"></div>
+      </div>
 
-        <div>
+      <div class="formgrid" style="margin-top:15px">
+        <div class="field">
           <label>Amount (₹)</label>
-          <input id="amount" type="number" min="0.01" step="0.01" placeholder="Enter amount" required>
+          <input id="amountInput" type="number" min="1" placeholder="Enter amount">
         </div>
-
-        <div>
-          <label>Choose a Reason</label>
-          <div id="categoryButtons" class="category-list"></div>
-          <input id="selectedCategory" type="hidden" required>
-          <div class="reason-note" id="reasonNote"></div>
-        </div>
-
-        <div>
+        <div class="field">
           <label>Date</label>
-          <input id="entryDate" type="date" required>
+          <input id="dateInput" type="date">
         </div>
-
-        <div>
-          <label>Description (Optional)</label>
-          <input id="description" type="text" placeholder="Example: Evening sales">
+        <div class="field full">
+          <label>Description (optional)</label>
+          <input id="descriptionInput" type="text" placeholder="Add a short note">
         </div>
-
-        <button class="primary" type="submit">Save Transaction</button>
-      </form>
+      </div>
+      <div class="actions">
+        <button id="saveEntry">Save Entry</button>
+      </div>
     </div>
 
-    <!-- OPTIONAL MENU / SERVICE LIST -->
-    <div class="section">
-      <h3>Customize Income Reasons (Optional)</h3>
-      <p class="muted">
-        You can upload a photo of your restaurant menu, tea shop menu or salon service list.
-        SmartServe will try to read the names and add them to your income reasons.
-        You can also add names manually without uploading a photo.
-      </p>
-
-      <label>Upload Menu / Service List Photo</label>
-      <input id="menuPhoto" type="file" accept="image/*">
-
-      <img id="menuPreview" class="preview" alt="Menu preview" hidden>
-
-      <p id="ocrStatus" class="muted"></p>
-
-      <label>Review or Add Income Reasons</label>
-      <textarea id="menuItemsInput" placeholder="Enter one item per line&#10;Example:&#10;Chicken Biryani&#10;Veg Biryani&#10;Fried Rice"></textarea>
-
-      <button type="button" class="primary" id="saveMenuItems">Save Income Reasons</button>
-      <button type="button" id="resetMenuItems" style="margin-top:8px">Remove Custom Reasons</button>
-
-      <p class="muted" style="margin-top:10px">
-        Your default reasons will always remain available. Custom reasons are added alongside them.
-      </p>
+    <div class="card">
+      <h3>Customize Reasons</h3>
+      <p class="muted">Add income reasons specific to your business. Your default reasons will always remain available.</p>
+      <div class="formgrid">
+        <div class="field">
+          <label>New Income Reason</label>
+          <input id="customReasonInput" type="text" placeholder="Example: Catering Orders">
+        </div>
+        <div class="field" style="justify-content:end">
+          <button id="addCustomReason">Add Reason</button>
+        </div>
+      </div>
+      <hr>
+      <strong style="font-size:14px">Your Custom Reasons</strong>
+      <div id="customReasonList"></div>
     </div>
 
-    <div class="section">
-      <h3>Recent Transactions</h3>
-      <div id="allEntries"></div>
+    <div class="card">
+      <h3>Recent Entries</h3>
+      <div id="allTransactions"></div>
     </div>
   </section>
 
   <!-- STAFF -->
-  <section id="staff" class="panel">
-    <h2>Staff & Salaries</h2>
-
-    <div class="section">
-      <form id="staffForm">
-        <div><label>Employee Name</label><input id="staffName" placeholder="Enter name" required></div>
-        <div><label>Job Role</label><input id="staffRole" placeholder="Example: Cashier" required></div>
-        <div><label>Monthly Salary (₹)</label><input id="staffSalary" type="number" min="0" placeholder="Enter salary" required></div>
-        <button class="primary" type="submit">Add Employee</button>
-      </form>
+  <section class="page" id="staff">
+    <div class="card">
+      <h3>Add Staff Member</h3>
+      <div class="formgrid">
+        <div class="field"><label>Staff Name</label><input id="staffName" placeholder="Enter name"></div>
+        <div class="field"><label>Role</label><input id="staffRole" placeholder="Example: Cashier"></div>
+        <div class="field"><label>Monthly Salary (₹)</label><input id="staffSalary" type="number" min="0" placeholder="Enter salary"></div>
+      </div>
+      <div class="actions"><button id="addStaff">Add Staff</button></div>
     </div>
-
-    <div class="section">
-      <h3>Employee Records</h3>
+    <div class="card">
+      <h3>Staff & Salary Details</h3>
       <div id="staffList"></div>
     </div>
   </section>
 
   <!-- SUGGESTIONS -->
-  <section id="suggestions" class="panel">
-    <h2>Smart Suggestions</h2>
-    <div class="section">
-      <h3>Business Insights</h3>
+  <section class="page" id="suggestions">
+    <div class="card">
+      <h3>Business Suggestions</h3>
       <div id="suggestionContent"></div>
-    </div>
-    <div class="section">
-      <h3>Expense Analysis</h3>
-      <div id="expenseInsight"></div>
     </div>
   </section>
 
   <!-- REPORTS -->
-  <section id="reports" class="panel">
-    <h2>Business Reports</h2>
-
-    <div class="section">
-      <label>Choose Report Period</label>
-      <select id="reportPeriod">
-        <option value="all">All Records</option>
-        <option value="month">This Month</option>
-        <option value="week">Last 7 Days</option>
-      </select>
+  <section class="page" id="reports">
+    <div class="card">
+      <h3>Business Reports</h3>
+      <div class="field" style="max-width:250px">
+        <label>Report Period</label>
+        <select id="reportPeriod">
+          <option value="today">Today</option>
+          <option value="week">Last 7 Days</option>
+          <option value="month" selected>This Month</option>
+          <option value="all">All Records</option>
+        </select>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div><div class="muted">Income</div><div class="metric green" id="reportIncome">₹0</div></div>
+        <div><div class="muted">Expenses</div><div class="metric red" id="reportExpense">₹0</div></div>
+        <div><div class="muted">Net Profit</div><div class="metric" id="reportProfit">₹0</div></div>
+        <div><div class="muted">Profit Margin</div><div class="metric" id="reportMargin">0%</div></div>
+      </div>
     </div>
 
-    <div class="cards">
-      <div class="card"><small>Total Income</small><strong class="green" id="reportIncome">₹0</strong></div>
-      <div class="card"><small>Total Expenses</small><strong class="red" id="reportExpense">₹0</strong></div>
-      <div class="card"><small>Net Profit</small><strong id="reportProfit">₹0</strong></div>
-      <div class="card"><small>Profit Margin</small><strong id="reportMargin">0%</strong></div>
-    </div>
-
-    <div class="section">
+    <div class="card">
       <h3>Expense Breakdown</h3>
-      <p class="muted">See where your business money is being spent.</p>
-      <div id="expenseChart" class="chart-wrap"></div>
+      <div class="pie-wrap">
+        <canvas id="pieChart" width="220" height="220"></canvas>
+        <div class="legend" id="pieLegend"></div>
+      </div>
     </div>
 
-    <div class="section">
+    <div class="card">
       <h3>Today vs Yesterday</h3>
-      <p class="muted">Compare income, expenses and profit for the two days.</p>
-      <div id="dailyComparison"></div>
+      <p class="muted">Compare your income, expenses and profit for the two days.</p>
+      <canvas id="comparisonChart" width="600" height="260"></canvas>
+      <div id="comparisonMessage" class="notice"></div>
     </div>
 
-    <div class="section">
+    <div class="card">
       <h3>Transaction Summary</h3>
-      <div id="transactionSummary"></div>
-      <button class="primary" id="downloadCSV" style="margin-top:12px">Download CSV Report</button>
-    </div>
-
-    <div class="section">
-      <h3>Demo Data</h3>
-      <p class="muted">Reload sample transactions for the selected business. This replaces that business's current transactions and staff records.</p>
-      <button class="primary" id="reloadDemo">Reload Demo Data</button>
-      <button class="danger" id="clearData" style="margin-top:8px">Clear This Business's Data</button>
+      <div id="reportTransactions"></div>
+      <div class="actions">
+        <button id="downloadCSV">Download CSV Report</button>
+        <button class="secondary" id="reloadDemo">Reload Demo Data</button>
+        <button class="danger" id="clearData">Clear This Business Data</button>
+      </div>
+      <p class="muted">Reload Demo Data replaces the current business's records with the original examples.</p>
     </div>
   </section>
-</div>
 
-<!-- Free browser-based OCR library for reading menu photos -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <p class="muted" style="text-align:center;padding:15px 0">SmartServe AI · Simple tracking for small businesses</p>
+</main>
 
 <script>
-const STORAGE_KEY = "smartserve_data";
-const BUSINESS_KEY = "smartserve_business";
+const $ = id => document.getElementById(id);
+const today = new Date();
+
+function dateOffset(days){
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return localDate(d);
+}
+function localDate(d){
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function money(n){
+  return "₹" + Number(n || 0).toLocaleString("en-IN",{maximumFractionDigits:2});
+}
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
 
 const categories = {
-  "Restaurant": {
+  Restaurant:{
     income:["Food Sales","Online Orders","Takeaway","Other Income"],
     expense:["Food Ingredients","Vegetables","Meat/Chicken","Oil","Electricity","Water","Rent","Packaging","Other"]
   },
-  "Tea Shop": {
+  "Tea Shop":{
     income:["Tea Sales","Coffee Sales","Snacks Sales","Other Income"],
     expense:["Milk","Tea Powder","Coffee Powder","Sugar","Snacks","Cups/Packets","Electricity","Rent","Water","Other"]
   },
-  "Salon": {
+  Salon:{
     income:["Haircut","Hair Colour","Facial","Hair Spa","Other Services"],
     expense:["Hair Products","Beauty Products","Shampoo","Equipment","Electricity","Rent","Water","Other"]
   }
 };
 
-const today = new Date();
-
-function dateString(d) {
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,"0");
-  const day=String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
+function transaction(type,category,amount,daysAgo,description=""){
+  return {id:crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+Math.random()),type,category,amount,date:dateOffset(-daysAgo),description};
 }
 
-const todayString=dateString(today);
-const yesterday=new Date(today);
-yesterday.setDate(today.getDate()-1);
-const yesterdayString=dateString(yesterday);
-
-function money(n) {
-  return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
-}
-
-function escapeHTML(value) {
-  return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
-}
-
-function blankData() {
-  return {transactions:[],staff:[],menuItems:[]};
-}
-
-/* DIFFERENT DEMO INFORMATION FOR EACH BUSINESS */
-
-function sampleData(business) {
-  const data=blankData();
-
-  const samples={
-    "Restaurant":{
-      income:[
-        ["Food Sales",3200],["Online Orders",1800],
-        ["Takeaway",1200],["Food Sales",2800],
-        ["Online Orders",1500],["Takeaway",950]
-      ],
-      expense:[
-        ["Vegetables",650],["Meat/Chicken",900],
-        ["Oil",300],["Electricity",450],
-        ["Packaging",250],["Rent",1200]
+function sampleData(){
+  return {
+    Restaurant:{
+      transactions:[
+        transaction("income","Food Sales",3200,0),
+        transaction("income","Online Orders",1800,0),
+        transaction("income","Takeaway",1200,1),
+        transaction("income","Food Sales",2800,1),
+        transaction("income","Online Orders",1500,2),
+        transaction("income","Takeaway",950,3),
+        transaction("expense","Vegetables",650,0),
+        transaction("expense","Meat/Chicken",900,0),
+        transaction("expense","Oil",300,1),
+        transaction("expense","Electricity",450,1),
+        transaction("expense","Packaging",250,2),
+        transaction("expense","Rent",1200,3)
       ],
       staff:[
-        ["Ravi","Cook",14000],["Suresh","Cashier",10000],
-        ["Meena","Helper",8000]
-      ]
+        {id:"r1",name:"Ravi",role:"Cook",salary:14000,paid:false},
+        {id:"r2",name:"Suresh",role:"Cashier",salary:10000,paid:true},
+        {id:"r3",name:"Meena",role:"Helper",salary:8000,paid:false}
+      ],
+      customIncomeReasons:[]
     },
     "Tea Shop":{
-      income:[
-        ["Tea Sales",1600],["Coffee Sales",850],
-        ["Snacks Sales",1200],["Tea Sales",1900],
-        ["Coffee Sales",700],["Snacks Sales",950]
-      ],
-      expense:[
-        ["Milk",500],["Tea Powder",300],
-        ["Sugar",180],["Snacks",450],
-        ["Cups/Packets",150],["Electricity",300],["Rent",800]
+      transactions:[
+        transaction("income","Tea Sales",1600,0),
+        transaction("income","Coffee Sales",850,0),
+        transaction("income","Snacks Sales",1200,1),
+        transaction("income","Tea Sales",1900,1),
+        transaction("income","Coffee Sales",700,2),
+        transaction("income","Snacks Sales",950,3),
+        transaction("expense","Milk",500,0),
+        transaction("expense","Tea Powder",300,0),
+        transaction("expense","Sugar",180,1),
+        transaction("expense","Snacks",450,1),
+        transaction("expense","Cups/Packets",150,2),
+        transaction("expense","Electricity",300,3),
+        transaction("expense","Rent",800,3)
       ],
       staff:[
-        ["Ramesh","Tea Maker",9000],["Kiran","Helper",7000]
-      ]
+        {id:"t1",name:"Ramesh",role:"Tea Maker",salary:9000,paid:false},
+        {id:"t2",name:"Kiran",role:"Helper",salary:7000,paid:true}
+      ],
+      customIncomeReasons:[]
     },
-    "Salon":{
-      income:[
-        ["Haircut",1800],["Hair Colour",2500],
-        ["Facial",2200],["Hair Spa",1600],
-        ["Haircut",1200],["Other Services",900]
-      ],
-      expense:[
-        ["Hair Products",650],["Beauty Products",850],
-        ["Shampoo",400],["Equipment",500],
-        ["Electricity",350],["Rent",1500]
+    Salon:{
+      transactions:[
+        transaction("income","Haircut",1800,0),
+        transaction("income","Hair Colour",2500,0),
+        transaction("income","Facial",2200,1),
+        transaction("income","Hair Spa",1600,1),
+        transaction("income","Haircut",1200,2),
+        transaction("income","Other Services",900,3),
+        transaction("expense","Hair Products",650,0),
+        transaction("expense","Beauty Products",850,0),
+        transaction("expense","Shampoo",400,1),
+        transaction("expense","Equipment",500,1),
+        transaction("expense","Electricity",350,2),
+        transaction("expense","Rent",1500,3)
       ],
       staff:[
-        ["Priya","Hair Stylist",15000],["Anu","Beautician",13000]
-      ]
+        {id:"s1",name:"Priya",role:"Hair Stylist",salary:15000,paid:false},
+        {id:"s2",name:"Anu",role:"Beautician",salary:13000,paid:true}
+      ],
+      customIncomeReasons:[]
     }
   };
-
-  const chosen=samples[business];
-  let id=1;
-
-  chosen.income.forEach((item,i)=>{
-    const day=new Date(today);
-    day.setDate(today.getDate()-(i%3));
-    data.transactions.push({
-      id:"demo-"+business+"-"+id++,
-      type:"income",
-      category:item[0],
-      amount:item[1],
-      date:dateString(day),
-      description:"Sample "+item[0]
-    });
-  });
-
-  chosen.expense.forEach((item,i)=>{
-    const day=new Date(today);
-    day.setDate(today.getDate()-(i%3));
-    data.transactions.push({
-      id:"demo-"+business+"-"+id++,
-      type:"expense",
-      category:item[0],
-      amount:item[1],
-      date:dateString(day),
-      description:"Sample "+item[0]
-    });
-  });
-
-  chosen.staff.forEach((s,i)=>{
-    data.staff.push({
-      id:"staff-demo-"+business+"-"+i,
-      name:s[0],
-      role:s[1],
-      salary:s[2],
-      paid:false
-    });
-  });
-
-  return data;
 }
 
-/* LOAD AND SAVE SEPARATE BUSINESS RECORDS */
+const STORAGE_KEY="smartserve_data";
+const BUSINESS_KEY="smartserve_business";
+let currentBusiness=localStorage.getItem(BUSINESS_KEY) || "Restaurant";
+let entryType="income";
+let selectedReason="";
 
-function loadStore() {
-  try {
+function loadStore(){
+  try{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-    if(saved && saved.businesses) {
-      ["Restaurant","Tea Shop","Salon"].forEach(b=>{
-        if(!saved.businesses[b]) saved.businesses[b]=sampleData(b);
-        if(!saved.businesses[b].transactions) saved.businesses[b].transactions=[];
-        if(!saved.businesses[b].staff) saved.businesses[b].staff=[];
-        if(!saved.businesses[b].menuItems) saved.businesses[b].menuItems=[];
+    if(saved && saved.businesses){
+      ["Restaurant","Tea Shop","Salon"].forEach(name=>{
+        if(!saved.businesses[name]) saved.businesses[name]={transactions:[],staff:[],customIncomeReasons:[]};
+        const b=saved.businesses[name];
+        b.transactions=Array.isArray(b.transactions)?b.transactions:[];
+        b.staff=Array.isArray(b.staff)?b.staff:[];
+        // Preserve custom reasons saved by the earlier menu-items version.
+        b.customIncomeReasons=Array.isArray(b.customIncomeReasons)?b.customIncomeReasons:
+          (Array.isArray(b.menuItems)?b.menuItems:[]);
       });
       return saved;
     }
-
-    const store={businesses:{}};
-    ["Restaurant","Tea Shop","Salon"].forEach(b=>{
-      store.businesses[b]=sampleData(b);
-    });
-
-    // Preserve older records if the previous version used one shared data list.
-    if(saved && (saved.transactions || saved.tx || saved.staff)) {
-      const oldBusiness=localStorage.getItem(BUSINESS_KEY)||"Restaurant";
-      store.businesses[oldBusiness]={
-        transactions:saved.transactions||saved.tx||[],
-        staff:saved.staff||[],
-        menuItems:[]
-      };
-    }
-    return store;
-  } catch(e) {
-    return {businesses:{
-      "Restaurant":sampleData("Restaurant"),
-      "Tea Shop":sampleData("Tea Shop"),
-      "Salon":sampleData("Salon")
-    }};
-  }
+  }catch(e){}
+  return {businesses:sampleData()};
 }
 
 let store=loadStore();
-let currentBusiness=localStorage.getItem(BUSINESS_KEY)||"Restaurant";
 
-if(!categories[currentBusiness]) currentBusiness="Restaurant";
-
-function saveData() {
+function saveData(){
   localStorage.setItem(STORAGE_KEY,JSON.stringify(store));
   localStorage.setItem(BUSINESS_KEY,currentBusiness);
 }
-
-function currentData() {
-  return store.businesses[currentBusiness];
+function currentData(){return store.businesses[currentBusiness];}
+function incomeReasons(){
+  return [...categories[currentBusiness].income,...currentData().customIncomeReasons];
 }
-function transactions() {
-  return currentData().transactions;
+function total(list,type){
+  return list.filter(x=>x.type===type).reduce((sum,x)=>sum+Number(x.amount),0);
 }
-function staff() {
-  return currentData().staff;
+function profit(list){return total(list,"income")-total(list,"expense");}
+function entriesForDate(date){
+  return currentData().transactions.filter(t=>t.date===date);
 }
-
-function total(type,items=transactions()) {
-  return items.filter(t=>t.type===type)
-    .reduce((sum,t)=>sum+Number(t.amount),0);
-}
-function profit(items=transactions()) {
-  return total("income",items)-total("expense",items);
-}
-function dateItems(date) {
-  return transactions().filter(t=>t.date===date);
-}
-function monthItems() {
-  return transactions().filter(t=>t.date.startsWith(todayString.slice(0,7)));
+function formatDate(date){
+  return new Date(date+"T00:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
 }
 
-/* NAVIGATION */
-
-function setPage(page) {
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  document.getElementById(page).classList.add("active");
-  document.querySelector(`[data-page="${page}"]`).classList.add("active");
-  renderAll();
-}
-
-document.querySelectorAll(".nav-btn").forEach(btn=>{
-  btn.addEventListener("click",()=>setPage(btn.dataset.page));
-});
-
-document.querySelectorAll(".business-btn").forEach(btn=>{
+// Navigation
+document.querySelectorAll("nav button").forEach(btn=>{
   btn.addEventListener("click",()=>{
-    currentBusiness=btn.dataset.business;
-    saveData();
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    $(btn.dataset.page).classList.add("active");
     renderAll();
   });
 });
 
-/* CATEGORY BUTTONS */
-
-function incomeReasons() {
-  return [...categories[currentBusiness].income,...currentData().menuItems];
-}
-
-function renderCategories() {
-  const type=document.getElementById("entryType").value;
-  const list=type==="income"
-    ? incomeReasons()
-    : categories[currentBusiness].expense;
-
-  const container=document.getElementById("categoryButtons");
-  container.innerHTML="";
-
-  document.getElementById("selectedCategory").value="";
-
-  list.forEach(name=>{
-    const btn=document.createElement("button");
-    btn.type="button";
-    btn.className="category-btn";
-    btn.textContent=name;
-
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".category-btn").forEach(b=>b.classList.remove("selected"));
-      btn.classList.add("selected");
-      document.getElementById("selectedCategory").value=name;
-    });
-
-    container.appendChild(btn);
-  });
-
-  document.getElementById("reasonNote").textContent=
-    type==="income"
-    ? "Default reasons are always available. Any custom menu or service names are shown here too."
-    : "Choose the type of expense you paid for.";
-}
-
-document.getElementById("entryType").addEventListener("change",renderCategories);
-
-/* MONEY ENTRY */
-
-document.getElementById("entryDate").value=todayString;
-
-document.getElementById("entryForm").addEventListener("submit",e=>{
-  e.preventDefault();
-
-  const amount=Number(document.getElementById("amount").value);
-  const category=document.getElementById("selectedCategory").value;
-
-  if(!category) {
-    alert("Please choose a reason.");
-    return;
-  }
-  if(!amount || amount<=0) {
-    alert("Please enter a valid amount.");
-    return;
-  }
-
-  transactions().push({
-    id:"tx-"+Date.now(),
-    type:document.getElementById("entryType").value,
-    amount:amount,
-    category:category,
-    date:document.getElementById("entryDate").value,
-    description:document.getElementById("description").value.trim()
-  });
-
+$("businessSelect").value=currentBusiness;
+$("businessSelect").addEventListener("change",e=>{
+  currentBusiness=e.target.value;
+  selectedReason="";
   saveData();
-  e.target.reset();
-  document.getElementById("entryDate").value=todayString;
+  renderAll();
+});
+
+$("dateInput").value=localDate(today);
+
+function setEntryType(type){
+  entryType=type;
+  selectedReason="";
+  $("incomeType").classList.toggle("active",type==="income");
+  $("expenseType").classList.toggle("active",type==="expense");
   renderCategories();
-  renderAll();
-  alert("Transaction saved successfully!");
-});
+}
+$("incomeType").onclick=()=>setEntryType("income");
+$("expenseType").onclick=()=>setEntryType("expense");
 
-/* MENU PHOTO AND CUSTOM REASONS */
-
-document.getElementById("menuPhoto").addEventListener("change",async e=>{
-  const file=e.target.files[0];
-  if(!file) return;
-
-  if(!file.type.startsWith("image/")) {
-    alert("Please upload a menu photo in image format.");
-    e.target.value="";
-    return;
-  }
-
-  const preview=document.getElementById("menuPreview");
-  preview.src=URL.createObjectURL(file);
-  preview.hidden=false;
-
-  const status=document.getElementById("ocrStatus");
-  status.textContent="Reading your menu photo. Please wait...";
-
-  if(!window.Tesseract) {
-    status.textContent="Automatic reading is unavailable. You can type the menu items in the box below.";
-    return;
-  }
-
-  try {
-    const result=await Tesseract.recognize(file,"eng");
-    const lines=result.data.text
-      .split("\n")
-      .map(line=>line.trim())
-      .filter(line=>line.length>1);
-
-    const existing=document.getElementById("menuItemsInput").value
-      .split("\n").map(x=>x.trim()).filter(Boolean);
-
-    const combined=[...new Set([...existing,...lines])];
-
-    document.getElementById("menuItemsInput").value=combined.join("\n");
-    status.textContent="Menu text detected. Please review the names, remove unwanted text and save your reasons.";
-  } catch(error) {
-    status.textContent="We couldn't read this photo clearly. Please type the menu items manually.";
-  }
-});
-
-document.getElementById("saveMenuItems").addEventListener("click",()=>{
-  const names=document.getElementById("menuItemsInput").value
-    .split("\n")
-    .map(x=>x.trim())
-    .filter(Boolean);
-
-  const defaults=categories[currentBusiness].income;
-  const cleaned=[...new Set(names)].filter(
-    name=>!defaults.some(d=>d.toLowerCase()===name.toLowerCase())
-  );
-
-  currentData().menuItems=cleaned;
-  saveData();
-  renderCategories();
-  renderAll();
-  alert("Your custom income reasons have been saved!");
-});
-
-document.getElementById("resetMenuItems").addEventListener("click",()=>{
-  if(!confirm("Remove all custom income reasons for this business?")) return;
-
-  currentData().menuItems=[];
-  document.getElementById("menuItemsInput").value="";
-  saveData();
-  renderCategories();
-  renderAll();
-  alert("Custom reasons removed. Default reasons are still available.");
-});
-
-/* STAFF */
-
-document.getElementById("staffForm").addEventListener("submit",e=>{
-  e.preventDefault();
-
-  staff().push({
-    id:"staff-"+Date.now(),
-    name:document.getElementById("staffName").value.trim(),
-    role:document.getElementById("staffRole").value.trim(),
-    salary:Number(document.getElementById("staffSalary").value),
-    paid:false
+function renderCategories(){
+  const reasons=entryType==="income"?incomeReasons():categories[currentBusiness].expense;
+  if(!reasons.includes(selectedReason)) selectedReason="";
+  $("reasonButtons").innerHTML=reasons.map(reason=>
+    `<button type="button" class="${selectedReason===reason?"selected":""}" data-reason="${escapeHTML(reason)}">${escapeHTML(reason)}</button>`
+  ).join("");
+  $("reasonButtons").querySelectorAll("button").forEach(btn=>{
+    btn.onclick=()=>{
+      selectedReason=btn.dataset.reason;
+      renderCategories();
+    };
   });
+}
 
+$("saveEntry").onclick=()=>{
+  const amount=Number($("amountInput").value);
+  const date=$("dateInput").value;
+  if(!selectedReason){alert("Please choose a reason.");return;}
+  if(!amount || amount<=0){alert("Please enter a valid amount.");return;}
+  if(!date){alert("Please select a date.");return;}
+  currentData().transactions.push({
+    id:crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    type:entryType,category:selectedReason,amount,date,
+    description:$("descriptionInput").value.trim()
+  });
   saveData();
-  e.target.reset();
+  $("amountInput").value="";
+  $("descriptionInput").value="";
+  selectedReason="";
   renderAll();
-});
+  alert("Entry saved successfully!");
+};
 
-function togglePaid(id) {
-  const person=staff().find(s=>s.id===id);
-  if(!person) return;
-  person.paid=!person.paid;
+// Customize income reasons
+$("addCustomReason").onclick=()=>{
+  const reason=$("customReasonInput").value.trim();
+  if(!reason){alert("Please enter a reason.");return;}
+  const all=incomeReasons().map(x=>x.toLowerCase());
+  if(all.includes(reason.toLowerCase())){alert("This reason already exists.");return;}
+  currentData().customIncomeReasons.push(reason);
+  $("customReasonInput").value="";
+  saveData();
+  renderAll();
+};
+
+function deleteCustomReason(index){
+  if(!confirm("Remove this custom income reason?")) return;
+  currentData().customIncomeReasons.splice(index,1);
+  if(selectedReason && !incomeReasons().includes(selectedReason)) selectedReason="";
   saveData();
   renderAll();
 }
+window.deleteCustomReason=deleteCustomReason;
 
-function deleteStaff(id) {
-  if(!confirm("Delete this employee record?")) return;
-  currentData().staff=staff().filter(s=>s.id!==id);
-  saveData();
-  renderAll();
+function renderCustomReasons(){
+  const list=currentData().customIncomeReasons;
+  $("customReasonList").innerHTML=list.length?list.map((reason,i)=>
+    `<div class="rowitem"><strong>${escapeHTML(reason)}</strong><button class="danger small" onclick="deleteCustomReason(${i})">Remove</button></div>`
+  ).join():'<div class="empty">No custom reasons added yet.</div>';
 }
 
-/* DELETE TRANSACTION */
-
-function deleteTransaction(id) {
-  if(!confirm("Delete this transaction?")) return;
-  currentData().transactions=transactions().filter(t=>t.id!==id);
+// Staff
+$("addStaff").onclick=()=>{
+  const name=$("staffName").value.trim();
+  const role=$("staffRole").value.trim();
+  const salary=Number($("staffSalary").value);
+  if(!name||!role||!salary||salary<0){alert("Please enter the staff name, role and salary.");return;}
+  currentData().staff.push({id:String(Date.now()),name,role,salary,paid:false});
+  $("staffName").value="";
+  $("staffRole").value="";
+  $("staffSalary").value="";
   saveData();
   renderAll();
+};
+
+function togglePaid(id){
+  const staff=currentData().staff.find(s=>s.id===id);
+  if(staff)staff.paid=!staff.paid;
+  saveData();renderAll();
 }
+function deleteStaff(id){
+  if(!confirm("Delete this staff member?"))return;
+  currentData().staff=currentData().staff.filter(s=>s.id!==id);
+  saveData();renderAll();
+}
+window.togglePaid=togglePaid;
+window.deleteStaff=deleteStaff;
 
-/* DISPLAY TRANSACTIONS */
-
-function transactionHTML(t) {
-  const isIncome=t.type==="income";
-  return `
-    <div class="entry">
-      <div>
-        <strong>${escapeHTML(t.category)}</strong>
-        <small>${escapeHTML(t.date)} ${t.description?" · "+escapeHTML(t.description):""}</small>
+function renderStaff(){
+  const staff=currentData().staff;
+  $("staffList").innerHTML=staff.length?staff.map(s=>`
+    <div class="rowitem">
+      <div><strong>${escapeHTML(s.name)}</strong><small>${escapeHTML(s.role)} · ${money(s.salary)} / month</small>
+      <small class="${s.paid?"green":"red"}">${s.paid?"Salary Paid":"Salary Pending"}</small></div>
+      <div class="actions">
+        <button class="secondary small" onclick="togglePaid('${escapeHTML(s.id)}')">${s.paid?"Mark Pending":"Mark Paid"}</button>
+        <button class="danger small" onclick="deleteStaff('${escapeHTML(s.id)}')">Delete</button>
       </div>
-      <div style="text-align:right">
-        <strong class="${isIncome?"green":"red"}">${isIncome?"+":"-"}${money(t.amount)}</strong>
-        <br><button class="danger small-btn" onclick="deleteTransaction('${t.id}')">Delete</button>
-      </div>
-    </div>`;
+    </div>`).join():'<div class="empty">No staff members added yet.</div>';
 }
 
-function renderTransactions() {
-  const sorted=[...transactions()].sort((a,b)=>b.date.localeCompare(a.date));
+// Dashboard
+function renderDashboard(){
+  const transactions=currentData().transactions;
+  const todayList=entriesForDate(localDate(today));
+  const income=total(todayList,"income");
+  const expense=total(todayList,"expense");
+  const net=income-expense;
+  const monthList=transactions.filter(t=>t.date.slice(0,7)===localDate(today).slice(0,7));
 
-  document.getElementById("latestEntries").innerHTML=
-    sorted.length
-    ? sorted.slice(0,6).map(transactionHTML).join("")
-    : '<div class="empty">No transactions yet.</div>';
+  $("todayIncome").textContent=money(income);
+  $("todayExpense").textContent=money(expense);
+  $("todayProfit").textContent=money(net);
+  $("todayProfit").className="metric "+(net>=0?"green":"red");
+  $("monthProfit").textContent=money(profit(monthList));
+  $("todayMessage").textContent=income===0&&expense===0?
+    "No entries recorded today. Add your first transaction in Money Entry.":
+    net>=0?"Your business is currently making a profit today.":"Your expenses are higher than your income today.";
 
-  document.getElementById("allEntries").innerHTML=
-    sorted.length
-    ? sorted.map(transactionHTML).join("")
-    : '<div class="empty">No transactions yet. Add your first entry above.</div>';
+  const percent=income===0?0:Math.min(100,expense/income*100);
+  $("todayBar").style.width=percent+"%";
+  $("barCaption").textContent=`Expenses are ${income?Math.round(percent):0}% of today's income.`;
+
+  const recent=[...transactions].sort((a,b)=>(b.date+a.id).localeCompare(a.date+b.id)).slice(0,5);
+  $("recentTransactions").innerHTML=recent.length?recent.map(t=>`
+    <div class="rowitem">
+      <div><strong>${escapeHTML(t.category)}</strong><small>${formatDate(t.date)} · ${t.type}</small></div>
+      <span class="amount ${t.type==="income"?"green":"red"}">${t.type==="income"?"+":"-"}${money(t.amount)}</span>
+    </div>`).join():'<div class="empty">No transactions yet.</div>';
 }
 
-/* STAFF DISPLAY */
-
-function renderStaff() {
-  const list=staff();
-  document.getElementById("staffList").innerHTML=list.length
-    ? list.map(s=>`
-      <div class="staff-item">
-        <div>
-          <strong>${escapeHTML(s.name)}</strong>
-          <small style="display:block;color:#64748b;margin-top:4px">
-            ${escapeHTML(s.role)} · ${money(s.salary)}/month
-          </small>
-          <small style="display:block;margin-top:4px;color:${s.paid?"#12845b":"#d34c4c"}">
-            ${s.paid?"Salary Paid":"Salary Pending"}
-          </small>
-        </div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
-          <button onclick="togglePaid('${s.id}')">${s.paid?"Mark Pending":"Mark Paid"}</button>
-          <button class="danger" onclick="deleteStaff('${s.id}')">Delete</button>
-        </div>
-      </div>`).join("")
-    : '<div class="empty">No employees added yet.</div>';
+// Money entry lists
+function renderTransactions(){
+  const transactions=[...currentData().transactions].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id));
+  $("allTransactions").innerHTML=transactions.length?transactions.map(t=>`
+    <div class="rowitem">
+      <div><strong>${escapeHTML(t.category)}</strong><small>${formatDate(t.date)} · ${t.type}${t.description?" · "+escapeHTML(t.description):""}</small></div>
+      <span class="amount ${t.type==="income"?"green":"red"}">${t.type==="income"?"+":"-"}${money(t.amount)}</span>
+    </div>`).join():'<div class="empty">No entries recorded yet.</div>';
 }
 
-/* DASHBOARD */
-
-function renderDashboard() {
-  const todayItems=dateItems(todayString);
-  const todayIn=total("income",todayItems);
-  const todayOut=total("expense",todayItems);
-  const todayNet=todayIn-todayOut;
-  const monthNet=profit(monthItems());
-
-  document.getElementById("homeTitle").textContent=currentBusiness+" Dashboard";
-  document.getElementById("todayIncome").textContent=money(todayIn);
-  document.getElementById("todayExpense").textContent=money(todayOut);
-  document.getElementById("todayProfit").textContent=money(todayNet);
-  document.getElementById("monthProfit").textContent=money(monthNet);
-
-  document.getElementById("todayProfit").className=todayNet>=0?"green":"red";
-  document.getElementById("monthProfit").className=monthNet>=0?"green":"red";
-
-  const max=Math.max(todayIn,todayOut,1);
-  document.getElementById("todayBars").innerHTML=`
-    <p>Income: ${money(todayIn)}</p>
-    <div class="bar-bg"><div class="bar" style="width:${todayIn/max*100}%"></div></div>
-    <p>Expenses: ${money(todayOut)}</p>
-    <div class="bar-bg"><div class="bar expense" style="width:${todayOut/max*100}%"></div></div>
-  `;
-
-  let message;
-  if(todayItems.length===0) {
-    message="No transactions have been recorded today. Add your income and expenses to see your business performance.";
-  } else if(todayNet>0) {
-    message="Your business has made a profit of "+money(todayNet)+" today. Keep tracking your expenses.";
-  } else if(todayNet<0) {
-    message="Your expenses are higher than your income today by "+money(Math.abs(todayNet))+". Review your spending.";
-  } else {
-    message="Your income and expenses are equal today.";
-  }
-
-  document.getElementById("businessCheck").textContent=message;
-}
-
-/* SUGGESTIONS */
-
-function renderSuggestions() {
-  const items=transactions();
-  const income=total("income");
-  const expenses=total("expense");
-  const net=income-expenses;
-
-  let suggestions=[];
-
-  if(items.length===0) {
-    suggestions.push("Start recording your income and expenses to receive business suggestions.");
-  } else {
-    if(net>0) suggestions.push("Your recorded income is higher than your expenses by "+money(net)+".");
-    else if(net<0) suggestions.push("Your recorded expenses are higher than your income by "+money(Math.abs(net))+". Review your spending.");
-    else suggestions.push("Your total recorded income and expenses are currently equal.");
-
-    if(income>0) {
-      const margin=net/income*100;
-      suggestions.push("Your overall profit margin is "+margin.toFixed(1)+"%.");
-    }
-
-    const pending=staff().filter(s=>!s.paid);
-    if(pending.length) suggestions.push(pending.length+" staff salary record(s) are marked as pending.");
-    else if(staff().length) suggestions.push("All staff salary records are marked as paid.");
-  }
-
-  document.getElementById("suggestionContent").innerHTML=
-    suggestions.map(s=>`<div class="message">${escapeHTML(s)}</div>`).join("");
-
+// Suggestions
+function renderSuggestions(){
+  const list=currentData().transactions;
+  const income=total(list,"income"),expense=total(list,"expense"),net=income-expense;
   const expenseGroups={};
-  items.filter(t=>t.type==="expense").forEach(t=>{
+  list.filter(t=>t.type==="expense").forEach(t=>{
     expenseGroups[t.category]=(expenseGroups[t.category]||0)+Number(t.amount);
   });
-
-  const biggest=Object.entries(expenseGroups).sort((a,b)=>b[1]-a[1])[0];
-
-  document.getElementById("expenseInsight").innerHTML=biggest
-    ? `<div class="message">Your highest recorded expense category is <strong>${escapeHTML(biggest[0])}</strong>, with spending of <strong>${money(biggest[1])}</strong>.</div>`
-    : '<div class="message">Add expense entries to see which category has the highest spending.</div>';
-}
-
-/* REPORT FILTER */
-
-function filteredItems() {
-  const period=document.getElementById("reportPeriod").value;
-  const items=transactions();
-
-  if(period==="month") return items.filter(t=>t.date.startsWith(todayString.slice(0,7)));
-
-  if(period==="week") {
-    const start=new Date(today);
-    start.setDate(today.getDate()-6);
-    const startString=dateString(start);
-    return items.filter(t=>t.date>=startString && t.date<=todayString);
+  const largest=Object.entries(expenseGroups).sort((a,b)=>b[1]-a[1])[0];
+  let html="";
+  if(!list.length){
+    html='<p class="muted">Add transactions to receive business suggestions.</p>';
+  }else{
+    html+=`<p>${net>=0?"Your recorded business income is higher than expenses.":"Your recorded expenses are higher than income. Review spending and sales."}</p>`;
+    if(largest)html+=`<div class="notice">Your largest recorded expense category is <strong>${escapeHTML(largest[0])}</strong> at ${money(largest[1])}. Check whether you can reduce unnecessary spending.</div>`;
+    if(income>0)html+=`<p class="muted">Your recorded expense-to-income ratio is ${Math.round(expense/income*100)}%.</p>`;
+    if(expense===0)html+='<p class="muted">No expenses have been recorded. Add expenses to understand your business costs.</p>';
   }
-
-  return items;
+  $("suggestionContent").innerHTML=html;
 }
 
-document.getElementById("reportPeriod").addEventListener("change",renderReports);
+// Reports
+function reportList(){
+  const period=$("reportPeriod").value;
+  const list=currentData().transactions;
+  if(period==="all")return list;
+  if(period==="today")return list.filter(t=>t.date===localDate(today));
+  if(period==="week"){
+    const start=new Date();start.setDate(start.getDate()-6);
+    return list.filter(t=>t.date>=localDate(start)&&t.date<=localDate(today));
+  }
+  return list.filter(t=>t.date.slice(0,7)===localDate(today).slice(0,7));
+}
 
-/* EXPENSE PIE CHART */
-
-function renderExpenseChart(items) {
+function drawPie(list){
+  const canvas=$("pieChart"),ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   const groups={};
-
-  items.filter(t=>t.type==="expense").forEach(t=>{
+  list.filter(t=>t.type==="expense").forEach(t=>{
     groups[t.category]=(groups[t.category]||0)+Number(t.amount);
   });
-
   const entries=Object.entries(groups).sort((a,b)=>b[1]-a[1]);
-  const totalExpense=entries.reduce((sum,e)=>sum+e[1],0);
-  const colors=["#477bb8","#e58a72","#65a88c","#a58ac4","#e2b65e","#6d9eaa","#d47b9b","#8b9aa9","#8b9a56"];
-
-  if(!totalExpense) {
-    document.getElementById("expenseChart").innerHTML='<div class="empty">No expense records for this period.</div>';
+  const sum=entries.reduce((s,e)=>s+e[1],0);
+  if(!sum){
+    ctx.fillStyle="#e8ecf3";ctx.beginPath();ctx.arc(110,110,85,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#687386";ctx.font="13px Arial";ctx.textAlign="center";ctx.fillText("No expenses",110,114);
+    $("pieLegend").innerHTML='<p class="muted">No expense records for this period.</p>';
     return;
   }
-
-  let angle=0;
-  const parts=entries.map((e,i)=>{
-    const start=angle;
-    angle+=e[1]/totalExpense*360;
-    return `${colors[i%colors.length]} ${start}deg ${angle}deg`;
+  const colors=["#315efb","#18a875","#f2a93b","#e35d6a","#8b68d9","#36a6b5","#9c7a54","#77849a"];
+  let start=-Math.PI/2;
+  entries.forEach((entry,i)=>{
+    const angle=entry[1]/sum*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(110,110);ctx.arc(110,110,85,start,start+angle);ctx.closePath();
+    ctx.fillStyle=colors[i%colors.length];ctx.fill();
+    start+=angle;
   });
-
-  const gradient="conic-gradient("+parts.join(",")+")";
-
-  document.getElementById("expenseChart").innerHTML=`
-    <div class="pie" style="background:${gradient}"></div>
-    <div class="legend">
-      ${entries.map((e,i)=>`
-        <div class="legend-row">
-          <span><i class="dot" style="background:${colors[i%colors.length]}"></i>${escapeHTML(e[0])}</span>
-          <strong>${money(e[1])} (${(e[1]/totalExpense*100).toFixed(1)}%)</strong>
-        </div>`).join("")}
-    </div>`;
+  ctx.beginPath();ctx.arc(110,110,48,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();
+  ctx.fillStyle="#172033";ctx.font="bold 13px Arial";ctx.textAlign="center";ctx.fillText(money(sum),110,114);
+  $("pieLegend").innerHTML=entries.map((e,i)=>`
+    <div><span>${escapeHTML(e[0])}</span><strong>${money(e[1])}</strong></div>
+  `).join();
 }
 
-/* TODAY VS YESTERDAY */
-
-function comparisonMessage(label,current,previous) {
-  if(current===0 && previous===0) return "No records for either day yet.";
-  if(previous===0 && current>0) return "You recorded "+money(current)+" today; there were no records yesterday.";
-  if(current===previous) return "The "+label.toLowerCase()+" amount is the same as yesterday.";
-  const difference=current-previous;
-  return label+" "+(difference>0?"increased":"decreased")+" by "+money(Math.abs(difference))+" compared with yesterday.";
-}
-
-function renderDailyComparison() {
-  const todayItems=dateItems(todayString);
-  const yesterdayItems=dateItems(yesterdayString);
-
+function drawComparison(){
+  const yesterday=entriesForDate(dateOffset(-1));
+  const current=entriesForDate(localDate(today));
   const values=[
-    {name:"Income",today:total("income",todayItems),yesterday:total("income",yesterdayItems)},
-    {name:"Expenses",today:total("expense",todayItems),yesterday:total("expense",yesterdayItems)},
-    {name:"Profit",today:profit(todayItems),yesterday:profit(yesterdayItems)}
+    {label:"Income",today:total(current,"income"),yesterday:total(yesterday,"income")},
+    {label:"Expenses",today:total(current,"expense"),yesterday:total(yesterday,"expense")},
+    {label:"Profit",today:profit(current),yesterday:profit(yesterday)}
   ];
-
-  document.getElementById("dailyComparison").innerHTML=values.map(v=>{
-    const max=Math.max(Math.abs(v.today),Math.abs(v.yesterday),1);
-    return `
-      <div style="margin-bottom:20px">
-        <strong>${v.name}</strong>
-        <p class="muted">Today: ${money(v.today)} · Yesterday: ${money(v.yesterday)}</p>
-        <div class="muted">Today</div>
-        <div class="bar-bg"><div class="bar" style="width:${Math.abs(v.today)/max*100}%"></div></div>
-        <div class="muted" style="margin-top:6px">Yesterday</div>
-        <div class="bar-bg"><div class="bar expense" style="width:${Math.abs(v.yesterday)/max*100}%"></div></div>
-        <div class="message">${escapeHTML(comparisonMessage(v.name,v.today,v.yesterday))}</div>
-      </div>`;
-  }).join("");
+  const canvas=$("comparisonChart"),ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const max=Math.max(1,...values.flatMap(v=>[Math.abs(v.today),Math.abs(v.yesterday)]));
+  const base=210,scale=150/max;
+  ctx.font="13px Arial";ctx.textAlign="center";
+  values.forEach((v,i)=>{
+    const x=115+i*185;
+    const h1=Math.abs(v.today)*scale,h2=Math.abs(v.yesterday)*scale;
+    ctx.fillStyle="#315efb";ctx.fillRect(x-36,base-h1,30,h1);
+    ctx.fillStyle="#f2a93b";ctx.fillRect(x+5,base-h2,30,h2);
+    ctx.fillStyle="#172033";ctx.fillText(v.label,x,235);
+    ctx.fillStyle="#687386";ctx.font="11px Arial";
+    ctx.fillText("Today",x-21,base+15);
+    ctx.fillText("Yesterday",x+20,base+29);
+    ctx.font="13px Arial";
+  });
+  const ti=total(current,"income"),yi=total(yesterday,"income");
+  const te=total(current,"expense"),ye=total(yesterday,"expense");
+  let message;
+  if(ti===0&&te===0&&yi===0&&ye===0)message="No records for either day yet.";
+  else if(yi===0&&ye===0)message="Yesterday has no records yet. Today's figures will provide your first comparison.";
+  else if(ti>yi)message="Your income is higher today than yesterday.";
+  else if(ti<yi)message="Your income is lower today than yesterday. Check your sales activity.";
+  else message="Your income is the same today and yesterday.";
+  $("comparisonMessage").textContent=message;
 }
 
-/* REPORTS */
-
-function renderReports() {
-  const items=filteredItems();
-  const income=total("income",items);
-  const expenses=total("expense",items);
-  const net=income-expenses;
-  const margin=income>0?net/income*100:0;
-
-  document.getElementById("reportIncome").textContent=money(income);
-  document.getElementById("reportExpense").textContent=money(expenses);
-  document.getElementById("reportProfit").textContent=money(net);
-  document.getElementById("reportProfit").className=net>=0?"green":"red";
-  document.getElementById("reportMargin").textContent=margin.toFixed(1)+"%";
-
-  renderExpenseChart(items);
-  renderDailyComparison();
-
-  const incomeCount=items.filter(t=>t.type==="income").length;
-  const expenseCount=items.filter(t=>t.type==="expense").length;
-
-  document.getElementById("transactionSummary").innerHTML=`
-    <p>Money received entries: <strong>${incomeCount}</strong></p>
-    <p>Money spent entries: <strong>${expenseCount}</strong></p>
-    <p>Total number of entries: <strong>${items.length}</strong></p>
-  `;
+function renderReports(){
+  const list=reportList();
+  const income=total(list,"income"),expense=total(list,"expense"),net=income-expense;
+  $("reportIncome").textContent=money(income);
+  $("reportExpense").textContent=money(expense);
+  $("reportProfit").textContent=money(net);
+  $("reportProfit").className="metric "+(net>=0?"green":"red");
+  $("reportMargin").textContent=(income?((net/income)*100).toFixed(1):"0")+"%";
+  drawPie(list);
+  drawComparison();
+  $("reportTransactions").innerHTML=list.length?
+    `<p class="muted">${list.length} transaction(s) in this period.</p>`:
+    '<div class="empty">No transactions in this period.</div>';
 }
+$("reportPeriod").onchange=renderReports;
 
-/* CSV DOWNLOAD */
-
-document.getElementById("downloadCSV").addEventListener("click",()=>{
-  const items=filteredItems();
-
-  if(!items.length) {
-    alert("There are no transactions to download.");
-    return;
-  }
-
-  const rows=[
-    ["Date","Type","Category","Amount","Description"],
-    ...items.map(t=>[t.date,t.type,t.category,t.amount,t.description||""])
-  ];
-
-  const csv=rows.map(row=>row.map(value=>
-    '"'+String(value).replace(/"/g,'""')+'"'
-  ).join(",")).join("\n");
-
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+$("downloadCSV").onclick=()=>{
+  const list=reportList();
+  const rows=[["Date","Type","Reason","Amount","Description"]];
+  list.forEach(t=>rows.push([t.date,t.type,t.category,t.amount,t.description||""]));
+  const csv=rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
-  a.href=url;
-  a.download=currentBusiness.replace(/\s/g,"_")+"_SmartServe_Report.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-});
+  a.href=url;a.download=currentBusiness.toLowerCase().replaceAll(" ","-")+"-report.csv";
+  a.click();URL.revokeObjectURL(url);
+};
 
-/* DEMO RESET AND CLEAR */
+$("reloadDemo").onclick=()=>{
+  if(!confirm("Replace this business's current data with the original demo examples?"))return;
+  const demo=sampleData();
+  store.businesses[currentBusiness]=demo[currentBusiness];
+  saveData();renderAll();
+};
+$("clearData").onclick=()=>{
+  if(!confirm("Clear all transactions, staff and custom reasons for this business?"))return;
+  store.businesses[currentBusiness]={transactions:[],staff:[],customIncomeReasons:[]};
+  saveData();renderAll();
+};
 
-document.getElementById("reloadDemo").addEventListener("click",()=>{
-  if(!confirm("Replace the current transactions and staff records with demo data for "+currentBusiness+"?")) return;
-
-  const oldMenuItems=currentData().menuItems||[];
-  store.businesses[currentBusiness]=sampleData(currentBusiness);
-  store.businesses[currentBusiness].menuItems=oldMenuItems;
-
-  saveData();
-  renderAll();
-  alert("Demo data loaded for "+currentBusiness+".");
-});
-
-document.getElementById("clearData").addEventListener("click",()=>{
-  if(!confirm("Clear all transactions and staff records for "+currentBusiness+"? Your custom income reasons will remain.")) return;
-
-  const oldMenuItems=currentData().menuItems||[];
-  store.businesses[currentBusiness]=blankData();
-  store.businesses[currentBusiness].menuItems=oldMenuItems;
-
-  saveData();
-  renderAll();
-  alert(currentBusiness+" records have been cleared.");
-});
-
-/* RENDER EVERYTHING */
-
-function renderAll() {
-  document.querySelectorAll(".business-btn").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.business===currentBusiness);
-  });
-
-  document.getElementById("menuItemsInput").value=
-    (currentData().menuItems||[]).join("\n");
-
+function renderAll(){
+  $("businessSelect").value=currentBusiness;
   renderCategories();
+  renderCustomReasons();
   renderDashboard();
   renderTransactions();
   renderStaff();
   renderSuggestions();
   renderReports();
 }
-
-saveData();
 renderAll();
 </script>
-
 </body>
 </html>
