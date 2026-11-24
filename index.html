@@ -54,6 +54,18 @@ textarea{min-height:110px;resize:vertical}
 .empty{color:#8290a4;text-align:center;padding:18px}
 .small-btn{font-size:12px;padding:7px 9px}
 .reason-note{background:#f1f5fa;padding:10px;border-radius:8px;font-size:12px;color:#64748b;margin-top:9px}
+#businessHome h2{text-align:center;margin:25px 0 8px}
+.business-intro{text-align:center;color:#64748b;font-size:14px;margin-bottom:25px}
+.business-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.business-card{background:white;border-radius:15px;padding:25px 18px;text-align:center;box-shadow:0 2px 12px #182b4510;border:1px solid #e8edf5;cursor:pointer;transition:transform .15s}
+.business-card:hover{transform:translateY(-3px)}
+.business-icon{font-size:42px;margin-bottom:12px}
+.business-card h3{font-size:19px;margin-bottom:8px}
+.business-card p{font-size:13px;color:#64748b;line-height:1.5;margin:0 0 16px}
+.business-card button{width:100%}
+#appArea{display:none}
+.top-business{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.current-business{font-weight:bold;color:#244d80}
 @media(max-width:500px){
  header{padding:17px}
  .container{padding:12px}
@@ -71,190 +83,204 @@ textarea{min-height:110px;resize:vertical}
 
 <div class="container">
 
-  <div class="business-row">
-    <button class="business-btn active" data-business="Restaurant">🍽️ Restaurant</button>
-    <button class="business-btn" data-business="Tea Shop">☕ Tea Shop</button>
-    <button class="business-btn" data-business="Salon">💇 Salon</button>
+  <!-- MAIN BUSINESS SELECTION HOME -->
+  <section id="businessHome">
+    <h2>Welcome to SmartServe AI</h2>
+    <p class="business-intro">Choose your business to manage its income, expenses, staff and reports.</p>
+
+    <div class="business-options">
+      <div class="business-card" onclick="openBusiness('Restaurant')">
+        <div class="business-icon">🍽️</div>
+        <h3>Restaurant</h3>
+        <p>Manage food sales, orders, ingredients and restaurant expenses.</p>
+        <button class="primary">Open Restaurant</button>
+      </div>
+
+      <div class="business-card" onclick="openBusiness('Tea Shop')">
+        <div class="business-icon">☕</div>
+        <h3>Tea Shop</h3>
+        <p>Track tea, coffee, snacks sales and daily shop expenses.</p>
+        <button class="primary">Open Tea Shop</button>
+      </div>
+
+      <div class="business-card" onclick="openBusiness('Salon')">
+        <div class="business-icon">💇</div>
+        <h3>Salon</h3>
+        <p>Manage salon services, customer payments and business expenses.</p>
+        <button class="primary">Open Salon</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED BUSINESS AREA -->
+  <div id="appArea">
+
+    <div class="top-business">
+      <button type="button" onclick="backToBusinesses()">← Back to Businesses</button>
+      <span class="current-business" id="currentBusinessLabel"></span>
+    </div>
+
+    <nav>
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="entry">Money Entry</button>
+      <button class="nav-btn" data-page="staff">Staff & Salaries</button>
+      <button class="nav-btn" data-page="suggestions">Suggestions</button>
+      <button class="nav-btn" data-page="reports">Reports</button>
+    </nav>
+
+    <!-- DASHBOARD -->
+    <section id="home" class="panel active">
+      <h2 id="homeTitle">Business Dashboard</h2>
+
+      <div class="cards">
+        <div class="card"><small>Today's Income</small><strong class="green" id="todayIncome">₹0</strong></div>
+        <div class="card"><small>Today's Expenses</small><strong class="red" id="todayExpense">₹0</strong></div>
+        <div class="card"><small>Today's Profit</small><strong id="todayProfit">₹0</strong></div>
+        <div class="card"><small>This Month's Profit</small><strong id="monthProfit">₹0</strong></div>
+      </div>
+
+      <div class="section">
+        <h3>Today's Business Performance</h3>
+        <p class="muted">Income compared with expenses</p>
+        <div id="todayBars"></div>
+      </div>
+
+      <div class="section">
+        <h3>Business Check</h3>
+        <div id="businessCheck" class="message"></div>
+      </div>
+
+      <div class="section">
+        <h3>Latest Transactions</h3>
+        <div id="latestEntries"></div>
+      </div>
+    </section>
+
+    <!-- MONEY ENTRY -->
+    <section id="entry" class="panel">
+      <h2>Money Entry</h2>
+
+      <div class="section">
+        <form id="entryForm">
+          <div>
+            <label>Transaction Type</label>
+            <select id="entryType">
+              <option value="income">Income – Money Received</option>
+              <option value="expense">Expense – Money Spent</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Amount (₹)</label>
+            <input id="amount" type="number" min="0.01" step="0.01" placeholder="Enter amount" required>
+          </div>
+
+          <div>
+            <label>Choose a Reason</label>
+            <div id="categoryButtons" class="category-list"></div>
+            <input id="selectedCategory" type="hidden" required>
+            <div class="reason-note" id="reasonNote"></div>
+          </div>
+
+          <div>
+            <label>Date</label>
+            <input id="entryDate" type="date" required>
+          </div>
+
+          <div>
+            <label>Description (Optional)</label>
+            <input id="description" type="text" placeholder="Example: Evening sales">
+          </div>
+
+          <button class="primary" type="submit">Save Transaction</button>
+        </form>
+      </div>
+
+      <div class="section">
+        <h3>Recent Transactions</h3>
+        <div id="allEntries"></div>
+      </div>
+    </section>
+
+    <!-- STAFF -->
+    <section id="staff" class="panel">
+      <h2>Staff & Salaries</h2>
+
+      <div class="section">
+        <form id="staffForm">
+          <div><label>Employee Name</label><input id="staffName" placeholder="Enter name" required></div>
+          <div><label>Job Role</label><input id="staffRole" placeholder="Example: Cashier" required></div>
+          <div><label>Monthly Salary (₹)</label><input id="staffSalary" type="number" min="0" placeholder="Enter salary" required></div>
+          <button class="primary" type="submit">Add Employee</button>
+        </form>
+      </div>
+
+      <div class="section">
+        <h3>Employee Records</h3>
+        <div id="staffList"></div>
+      </div>
+    </section>
+
+    <!-- SUGGESTIONS -->
+    <section id="suggestions" class="panel">
+      <h2>Smart Suggestions</h2>
+      <div class="section">
+        <h3>Business Insights</h3>
+        <div id="suggestionContent"></div>
+      </div>
+      <div class="section">
+        <h3>Expense Analysis</h3>
+        <div id="expenseInsight"></div>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="reports" class="panel">
+      <h2>Business Reports</h2>
+
+      <div class="section">
+        <label>Choose Report Period</label>
+        <select id="reportPeriod">
+          <option value="all">All Records</option>
+          <option value="month">This Month</option>
+          <option value="week">Last 7 Days</option>
+        </select>
+      </div>
+
+      <div class="cards">
+        <div class="card"><small>Total Income</small><strong class="green" id="reportIncome">₹0</strong></div>
+        <div class="card"><small>Total Expenses</small><strong class="red" id="reportExpense">₹0</strong></div>
+        <div class="card"><small>Net Profit</small><strong id="reportProfit">₹0</strong></div>
+        <div class="card"><small>Profit Margin</small><strong id="reportMargin">0%</strong></div>
+      </div>
+
+      <div class="section">
+        <h3>Expense Breakdown</h3>
+        <p class="muted">See where your business money is being spent.</p>
+        <div id="expenseChart" class="chart-wrap"></div>
+      </div>
+
+      <div class="section">
+        <h3>Today vs Yesterday</h3>
+        <p class="muted">Compare income, expenses and profit for the two days.</p>
+        <div id="dailyComparison"></div>
+      </div>
+
+      <div class="section">
+        <h3>Transaction Summary</h3>
+        <div id="transactionSummary"></div>
+        <button class="primary" id="downloadCSV" style="margin-top:12px">Download CSV Report</button>
+      </div>
+
+      <div class="section">
+        <h3>Demo Data</h3>
+        <p class="muted">Reload sample transactions for the selected business. This replaces that business's current transactions and staff records.</p>
+        <button class="primary" id="reloadDemo">Reload Demo Data</button>
+        <button class="danger" id="clearData" style="margin-top:8px">Clear This Business's Data</button>
+      </div>
+    </section>
+
   </div>
-
-  <nav>
-    <button class="nav-btn active" data-page="home">Home</button>
-    <button class="nav-btn" data-page="entry">Money Entry</button>
-    <button class="nav-btn" data-page="staff">Staff & Salaries</button>
-    <button class="nav-btn" data-page="suggestions">Suggestions</button>
-    <button class="nav-btn" data-page="reports">Reports</button>
-  </nav>
-
-  <!-- HOME -->
-  <section id="home" class="panel active">
-    <h2 id="homeTitle">Restaurant Dashboard</h2>
-
-    <div class="cards">
-      <div class="card"><small>Today's Income</small><strong class="green" id="todayIncome">₹0</strong></div>
-      <div class="card"><small>Today's Expenses</small><strong class="red" id="todayExpense">₹0</strong></div>
-      <div class="card"><small>Today's Profit</small><strong id="todayProfit">₹0</strong></div>
-      <div class="card"><small>This Month's Profit</small><strong id="monthProfit">₹0</strong></div>
-    </div>
-
-    <div class="section">
-      <h3>Today's Business Performance</h3>
-      <p class="muted">Income compared with expenses</p>
-      <div id="todayBars"></div>
-    </div>
-
-    <div class="section">
-      <h3>Business Check</h3>
-      <div id="businessCheck" class="message"></div>
-    </div>
-
-    <div class="section">
-      <h3>Latest Transactions</h3>
-      <div id="latestEntries"></div>
-    </div>
-  </section>
-
-  <!-- MONEY ENTRY -->
-  <section id="entry" class="panel">
-    <h2>Money Entry</h2>
-
-    <div class="section">
-      <form id="entryForm">
-        <div>
-          <label>Transaction Type</label>
-          <select id="entryType">
-            <option value="income">Income – Money Received</option>
-            <option value="expense">Expense – Money Spent</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Amount (₹)</label>
-          <input id="amount" type="number" min="0.01" step="0.01" placeholder="Enter amount" required>
-        </div>
-
-        <div>
-          <label>Choose a Reason</label>
-          <div id="categoryButtons" class="category-list"></div>
-          <input id="selectedCategory" type="hidden" required>
-          <div class="reason-note" id="reasonNote"></div>
-        </div>
-
-        <div>
-          <label>Date</label>
-          <input id="entryDate" type="date" required>
-        </div>
-
-        <div>
-          <label>Description (Optional)</label>
-          <input id="description" type="text" placeholder="Example: Evening sales">
-        </div>
-
-        <button class="primary" type="submit">Save Transaction</button>
-      </form>
-    </div>
-
-    <!-- CUSTOM INCOME REASONS -->
-    <div class="section">
-      <h3>Customize Income Reasons (Optional)</h3>
-      <p class="muted">
-        Add your restaurant menu items, tea shop products or salon services manually.
-        These names will appear in your income reasons.
-      </p>
-
-      <label>Add Income Reasons</label>
-      <textarea id="menuItemsInput" placeholder="Enter one item per line&#10;Example:&#10;Chicken Biryani&#10;Veg Biryani&#10;Fried Rice"></textarea>
-
-      <button type="button" class="primary" id="saveMenuItems">Save Income Reasons</button>
-      <button type="button" id="resetMenuItems" style="margin-top:8px">Remove Custom Reasons</button>
-
-      <p class="muted" style="margin-top:10px">
-        Your default reasons will always remain available. Custom reasons are added alongside them.
-      </p>
-    </div>
-
-    <div class="section">
-      <h3>Recent Transactions</h3>
-      <div id="allEntries"></div>
-    </div>
-  </section>
-
-  <!-- STAFF -->
-  <section id="staff" class="panel">
-    <h2>Staff & Salaries</h2>
-
-    <div class="section">
-      <form id="staffForm">
-        <div><label>Employee Name</label><input id="staffName" placeholder="Enter name" required></div>
-        <div><label>Job Role</label><input id="staffRole" placeholder="Example: Cashier" required></div>
-        <div><label>Monthly Salary (₹)</label><input id="staffSalary" type="number" min="0" placeholder="Enter salary" required></div>
-        <button class="primary" type="submit">Add Employee</button>
-      </form>
-    </div>
-
-    <div class="section">
-      <h3>Employee Records</h3>
-      <div id="staffList"></div>
-    </div>
-  </section>
-
-  <!-- SUGGESTIONS -->
-  <section id="suggestions" class="panel">
-    <h2>Smart Suggestions</h2>
-    <div class="section">
-      <h3>Business Insights</h3>
-      <div id="suggestionContent"></div>
-    </div>
-    <div class="section">
-      <h3>Expense Analysis</h3>
-      <div id="expenseInsight"></div>
-    </div>
-  </section>
-
-  <!-- REPORTS -->
-  <section id="reports" class="panel">
-    <h2>Business Reports</h2>
-
-    <div class="section">
-      <label>Choose Report Period</label>
-      <select id="reportPeriod">
-        <option value="all">All Records</option>
-        <option value="month">This Month</option>
-        <option value="week">Last 7 Days</option>
-      </select>
-    </div>
-
-    <div class="cards">
-      <div class="card"><small>Total Income</small><strong class="green" id="reportIncome">₹0</strong></div>
-      <div class="card"><small>Total Expenses</small><strong class="red" id="reportExpense">₹0</strong></div>
-      <div class="card"><small>Net Profit</small><strong id="reportProfit">₹0</strong></div>
-      <div class="card"><small>Profit Margin</small><strong id="reportMargin">0%</strong></div>
-    </div>
-
-    <div class="section">
-      <h3>Expense Breakdown</h3>
-      <p class="muted">See where your business money is being spent.</p>
-      <div id="expenseChart" class="chart-wrap"></div>
-    </div>
-
-    <div class="section">
-      <h3>Today vs Yesterday</h3>
-      <p class="muted">Compare income, expenses and profit for the two days.</p>
-      <div id="dailyComparison"></div>
-    </div>
-
-    <div class="section">
-      <h3>Transaction Summary</h3>
-      <div id="transactionSummary"></div>
-      <button class="primary" id="downloadCSV" style="margin-top:12px">Download CSV Report</button>
-    </div>
-
-    <div class="section">
-      <h3>Demo Data</h3>
-      <p class="muted">Reload sample transactions for the selected business. This replaces that business's current transactions and staff records.</p>
-      <button class="primary" id="reloadDemo">Reload Demo Data</button>
-      <button class="danger" id="clearData" style="margin-top:8px">Clear This Business's Data</button>
-    </div>
-  </section>
 </div>
 
 <script>
@@ -421,7 +447,6 @@ function loadStore() {
       store.businesses[b]=sampleData(b);
     });
 
-    // Preserve older records if the previous version used one shared data list.
     if(saved && (saved.transactions || saved.tx || saved.staff)) {
       const oldBusiness=localStorage.getItem(BUSINESS_KEY)||"Restaurant";
       store.businesses[oldBusiness]={
@@ -474,13 +499,33 @@ function monthItems() {
   return transactions().filter(t=>t.date.startsWith(todayString.slice(0,7)));
 }
 
-/* NAVIGATION */
+/* BUSINESS SELECTION AND NAVIGATION */
+
+function openBusiness(business) {
+  if(!categories[business]) return;
+
+  currentBusiness=business;
+  saveData();
+
+  document.getElementById("businessHome").style.display="none";
+  document.getElementById("appArea").style.display="block";
+  document.getElementById("currentBusinessLabel").textContent=business;
+
+  setPage("home");
+}
+
+function backToBusinesses() {
+  document.getElementById("appArea").style.display="none";
+  document.getElementById("businessHome").style.display="block";
+}
 
 function setPage(page) {
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+
   document.getElementById(page).classList.add("active");
   document.querySelector(`[data-page="${page}"]`).classList.add("active");
+
   renderAll();
 }
 
@@ -488,18 +533,10 @@ document.querySelectorAll(".nav-btn").forEach(btn=>{
   btn.addEventListener("click",()=>setPage(btn.dataset.page));
 });
 
-document.querySelectorAll(".business-btn").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    currentBusiness=btn.dataset.business;
-    saveData();
-    renderAll();
-  });
-});
-
 /* CATEGORY BUTTONS */
 
 function incomeReasons() {
-  return [...categories[currentBusiness].income,...currentData().menuItems];
+  return categories[currentBusiness].income;
 }
 
 function renderCategories() {
@@ -530,7 +567,7 @@ function renderCategories() {
 
   document.getElementById("reasonNote").textContent=
     type==="income"
-    ? "Default reasons are always available. Your custom menu or service names are shown here too."
+    ? "Choose the type of income you received."
     : "Choose the type of expense you paid for.";
 }
 
@@ -570,37 +607,6 @@ document.getElementById("entryForm").addEventListener("submit",e=>{
   renderCategories();
   renderAll();
   alert("Transaction saved successfully!");
-});
-
-/* CUSTOM INCOME REASONS */
-
-document.getElementById("saveMenuItems").addEventListener("click",()=>{
-  const names=document.getElementById("menuItemsInput").value
-    .split("\n")
-    .map(x=>x.trim())
-    .filter(Boolean);
-
-  const defaults=categories[currentBusiness].income;
-  const cleaned=[...new Set(names)].filter(
-    name=>!defaults.some(d=>d.toLowerCase()===name.toLowerCase())
-  );
-
-  currentData().menuItems=cleaned;
-  saveData();
-  renderCategories();
-  renderAll();
-  alert("Your custom income reasons have been saved!");
-});
-
-document.getElementById("resetMenuItems").addEventListener("click",()=>{
-  if(!confirm("Remove all custom income reasons for this business?")) return;
-
-  currentData().menuItems=[];
-  document.getElementById("menuItemsInput").value="";
-  saveData();
-  renderCategories();
-  renderAll();
-  alert("Custom reasons removed. Default reasons are still available.");
 });
 
 /* STAFF */
@@ -936,9 +942,7 @@ document.getElementById("downloadCSV").addEventListener("click",()=>{
 document.getElementById("reloadDemo").addEventListener("click",()=>{
   if(!confirm("Replace the current transactions and staff records with demo data for "+currentBusiness+"?")) return;
 
-  const oldMenuItems=currentData().menuItems||[];
   store.businesses[currentBusiness]=sampleData(currentBusiness);
-  store.businesses[currentBusiness].menuItems=oldMenuItems;
 
   saveData();
   renderAll();
@@ -946,11 +950,9 @@ document.getElementById("reloadDemo").addEventListener("click",()=>{
 });
 
 document.getElementById("clearData").addEventListener("click",()=>{
-  if(!confirm("Clear all transactions and staff records for "+currentBusiness+"? Your custom income reasons will remain.")) return;
+  if(!confirm("Clear all transactions and staff records for "+currentBusiness+"?")) return;
 
-  const oldMenuItems=currentData().menuItems||[];
   store.businesses[currentBusiness]=blankData();
-  store.businesses[currentBusiness].menuItems=oldMenuItems;
 
   saveData();
   renderAll();
@@ -960,12 +962,7 @@ document.getElementById("clearData").addEventListener("click",()=>{
 /* RENDER EVERYTHING */
 
 function renderAll() {
-  document.querySelectorAll(".business-btn").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.business===currentBusiness);
-  });
-
-  document.getElementById("menuItemsInput").value=
-    (currentData().menuItems||[]).join("\n");
+  document.getElementById("currentBusinessLabel").textContent=currentBusiness;
 
   renderCategories();
   renderDashboard();
@@ -976,7 +973,6 @@ function renderAll() {
 }
 
 saveData();
-renderAll();
 </script>
 
 </body>
